@@ -5,12 +5,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-
+import org.springframework.web.servlet.ModelAndView;
 @Controller
-@RequestMapping("/")
+
 public class PersonController {
+    @RequestMapping(value = "/")
+    public String index(){
+        return "index";
+    }
     @RequestMapping(value = "/FindImportance")
-    @ResponseBody
     public HashMap<String,String> FindImportance(){
         return new person().findImportance();
         
