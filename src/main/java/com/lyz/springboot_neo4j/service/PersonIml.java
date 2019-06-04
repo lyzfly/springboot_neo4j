@@ -17,7 +17,6 @@ public class PersonIml implements PersonService {
     @Override
     public StatementResult FindImportance() {
         return personrepository.findimportance();
-
     }
 
 }
