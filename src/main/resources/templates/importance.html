@@ -3,15 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <style>
+
+        #header{
+            text-align: center;
+            color: white;
+            background: dodgerblue;
+        }
+
+        .content{
+
+        }
+    </style>
 </head>
-<body>
-<a href="FindTheMostImport">
-    <button type="button">获取关键度最大的节点</button>
-</a>
-<form action="getOnePersonImportance" method="post">
-    请输入需要查询节点的关键度量：<br>
-    <input type="text" name="person_name">
-    <input type="submit" value="Submit">
-</form>
+<body style="margin: 0">
+    <div id="header">
+        <h1>节点重要性评估</h1>
+    </div>
+
+    <div id="content">
+        <div>
+            <a href="FindTheMostImport">
+                <button type="button" style="color: grey;width: 30%;height: 100px">获取关键度最大的节点</button>
+            </a>
+        </div>
+        <div>
+            <form action="getOnePersonImportance" method="post">
+            请输入需要查询节点的关键度量：<br>
+            <input type="text" name="person_name">
+            <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
 </body>
 </html>

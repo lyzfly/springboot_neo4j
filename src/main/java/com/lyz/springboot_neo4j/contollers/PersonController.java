@@ -14,18 +14,23 @@ public class PersonController {
     public String index(){
         return "index";
     }
-    @RequestMapping(value = "/FindImportance")
-    public HashMap<String,String> FindImportance(HttpRequest request){
-        return new PersonImportance().findImportance();
-    }
 
     @RequestMapping(value = "/importance")
     public String  importance(){
         return "importance";
     }
+
     @RequestMapping(value = "/community")
     public String community(){
         return "community";
+    }
+
+
+
+    @RequestMapping(value = "/FindImportance")
+    @ResponseBody
+    public HashMap<String,String> FindImportance(HttpRequest request){
+        return new PersonImportance().findImportance();
     }
 
     @RequestMapping(value = "/getOnePersonImportance",method = RequestMethod.POST)
@@ -41,4 +46,5 @@ public class PersonController {
     public HashMap<String,String> FindTheMostImportant(){
         return new PersonImportance().findTheMostImport();
     }
+
 }

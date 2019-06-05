@@ -1,21 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="">
     <meta charset="UTF-8">
-    <title>图算法选择</title>
+    <title>Neo4j图算法</title>
     <script>
         function submitForm(){
             var form = document.getElementById("myform");
             form.submit();
         }
     </script>
+
+    <style>
+        .picture{text-align: center;font-size: 50px;color:white}
+
+        #header{
+            background: deepskyblue;
+            color: darkred;
+            text-align: center;
+            padding:5px;
+            margin:0px;
+
+        }
+    </style>
 </head>
-<body>
-    <p>Neo4j Graph Algorithm</p>
-    <a href="importance">关键节点度量</a>
+<body style="margin: 0">
+    <div id="header" >
+        <img src="https://neo4j.com/wp-content/themes/neo4jweb/assets/images/neo4j-logo-2015.png" align="left"><h1>Neo4j Graph Algorithm</h1><br>
+    </div>
     <br>
-    <a href="Community">相关节点度量</a>
     <br>
-    <a href="Connective">节点连通性</a>
+    <div id="content">
+        <a href="importance"><button style="height: 100px;width: 30%">关键节点的度量</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="Community"><button style="height: 100px;width: 30%">相关节点的度量</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="Connective" style="text-align: right;"><button style="height: 100px;width: 30%; ">节点连通性的判断</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+    <div id="foot">
+
+    </div>
+
+
 </body>
 </html>

@@ -48,11 +48,24 @@
             <version>1.7.5</version>
         </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/org.neo4j/neo4j-ogm-http-driver -->
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-ogm-http-driver</artifactId>
+            <version>3.1.10</version>
         </dependency>
+
+
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional> <!-- 这个需要为 true 热部署才有效 -->
+            <scope>runtime</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -60,6 +73,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork><!-- 如果没有该配置，热部署的devtools不生效 -->
+                </configuration>
             </plugin>
         </plugins>
     </build>
