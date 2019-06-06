@@ -12,34 +12,84 @@
     </script>
 
     <style>
-        .picture{text-align: center;font-size: 50px;color:white}
 
-        #header{
+        .header {
             background: deepskyblue;
             color: black;
             text-align: center;
-            margin:0px;
+            margin: 0px;
             padding: 0px;
+        }
+
+        .content{
+        }
+
+        .block1{
+            position: relative;
+            left:200px;
+            top:100px;
+            float:left;
+        }
+
+        .block2{
+            position: relative;
+            left: 500px;
+            top: 100px;
+            float:left;
+        }
+
+        .block3{
+            position: relative;
+            left: 750px;
+            top: 100px;
+            float:left;
+        }
+
+        img.bigger{
+            width: 327px;
+            height: 327px;
+           transition: transform 1s;
+        }
+
+        .bigger:hover{
+            transform: scale(1.5,1.5);
+        }
+
+        .label{
+
         }
     </style>
 </head>
 <body style="margin: 0px;padding: 0px">
-    <div id="header">
+    <div class="header">
 
             <a href="https://neo4j.com/">
-                <div> <img src="https://neo4j.com/wp-content/themes/neo4jweb/assets/images/neo4j-logo-2015.png" align="right" width="100" height="50" ></div>
+                <div> <img src="https://neo4j.com/wp-content/themes/neo4jweb/assets/images/neo4j-logo-2015.png" align="right" width="200" height="100" ></div>
             </a>
 
-        <div><h1 style="font-size: 50px">Neo4j Graph Algorithm</h1></div>
+        <div><h1 style="font-size: 100px;margin: 0px">Neo4j Graph Algorithm</h1></div>
 
 
     </div>
-    <br>
-    <br>
-    <div id="content">
-        <a href="importance"><button style="height: 100px;width: 30%">关键节点的度量</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="Community"><button style="height: 100px;width: 30%">相关节点的度量</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="Connective" style="text-align: right;"><button style="height: 100px;width: 30%; ">节点连通性的判断</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <div class="content">
+        <div class="block1">
+            <a href="importance"><img class="bigger" src="img/degree.png"></a>
+            <br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点重要性评估</p>
+        </div>
+        <div class="block2">
+            <a href="Community"><img class="bigger" src="img/cluster.png"></a>
+            <br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点相关度评估</p>
+        </div>
+        <div class="block3">
+            <a href="Connective"><img class="bigger" src="img/path.png"></a>
+            <br>
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点连通性评估</p>
+        </div>
     </div>
     <div id="foot">
 
