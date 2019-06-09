@@ -3,14 +3,17 @@ package com.lyz.springboot_neo4j.service;
 import org.neo4j.driver.v1.*;
 import static org.neo4j.driver.v1.Values.parameters;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.HashMap;
 
 
 @Service
 public class PersonImportance {
-    Driver driver = GraphDatabase.driver("bolt://localhost:7687", AuthTokens.basic("neo4j", "0228"));
+    @Autowired
+    Driver driver;
     public double findOnePersonImportance(String name){
+
         String query = "CALL algo.degree.stream(\"Person\", \"In\", {direction: \"incoming\"})\n" +
                 "YIELD nodeId, score\n" + "WHERE algo.asNode(nodeId).name={x}"+
                 "RETURN score AS followers";
@@ -44,26 +47,26 @@ public class PersonImportance {
         }
     }
 
-    public HashMap<String,String> findTheMostImport() {
-        HashMap<String, String> hashMap = new HashMap<>();
+    public HashMap<String,Double> findTheMostImport() {
+        HashMap<String, Double> hashMap = new HashMap<>();
         String query = "CALL algo.degree.stream(\"Person\",\"In\",{direction:\"incoming\"})\n" +
                 "YIELD nodeId,score\n" + "RETURN algo.asNode(nodeId).name AS name,score AS followers\n" +
                 "ORDER BY followers DESC";
         try (Session session = driver.session()) {
             try (Transaction tx = session.beginTransaction()) {
                 StatementResult result = tx.run(query);
-                tx.success();
+                double max = Double.MIN_VALUE;
                 while (result.hasNext()) {
                     Record record = result.next();
-
+                    Double value = Double.valueOf(record.get("followers").toString());
                     String key = record.get("name").toString();
-                    String value = record.get("followers").toString();
-                    hashMap.put(key, value);
+                    if (max <= value) {
+                        max = value;
+                        hashMap.put(key, value);
+                    } else {break;}
                 }
-                return hashMap;
             }
         }
+        return hashMap;
     }
-
-
 }

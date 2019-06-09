@@ -45,6 +45,12 @@
             float:left;
         }
 
+        .block4{
+            position: absolute;
+            left: 200px;
+            top: 700px;
+            float: left;
+        }
         img.bigger{
             width: 327px;
             height: 327px;
@@ -85,16 +91,20 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点相关度评估</p>
         </div>
         <div class="block3">
-            <a href="Connective"><img class="bigger" src="img/path.png"></a>
+            <a href="connectivity"><img class="bigger" src="img/path.png"></a>
             <br>
             <br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点连通性评估</p>
+        </div>
+        <div class=" block4">
+            <form action="uploadfile" method="post" enctype="multipart/form-data">
+                <input type="file" name="file"><br><br>
+                <input type="submit" value="提交">
+            </form>
         </div>
     </div>
     <div id="foot">
 
     </div>
-
-
 </body>
 </html>

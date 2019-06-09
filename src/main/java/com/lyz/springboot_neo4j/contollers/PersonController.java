@@ -1,5 +1,6 @@
 package com.lyz.springboot_neo4j.contollers;
 
+import com.lyz.springboot_neo4j.service.PersonConnectivity;
 import com.lyz.springboot_neo4j.service.PersonImportance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 @Controller
 
 public class PersonController {
+
     @RequestMapping(value = "/index")
     public String index(){
         return "index";
@@ -26,6 +28,10 @@ public class PersonController {
         return "community";
     }
 
+    @RequestMapping(value = "/connectivity")
+    public String connectivity(){
+        return "connectivity";
+    }
 
     @Autowired PersonImportance personImportance;
     @RequestMapping(value = "/FindImportance")
@@ -44,9 +50,17 @@ public class PersonController {
 
     @RequestMapping(value = "/FindTheMostImport")
     @ResponseBody
-    public HashMap<String,String> FindTheMostImportant(){
+    public HashMap<String,Double> FindTheMostImportant() {
         return personImportance.findTheMostImport();
     }
-    
 
+    @Autowired
+    PersonConnectivity connectivity;
+    @PostMapping("/ifConnnective")
+    @ResponseBody
+    public boolean IFconnective(HttpServletRequest request){
+        String startnode = request.getParameter("startnode");
+        String endnode = request.getParameter("endnode");
+        return connectivity.ifConnective(startnode, endnode);
+    }
 }
