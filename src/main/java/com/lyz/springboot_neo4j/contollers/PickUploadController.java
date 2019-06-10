@@ -20,18 +20,23 @@ public class PickUploadController {
     UpLoadFile upLoadFile;
     @PostMapping("/uploadfile")
     @ResponseBody
-    public String uploadFile(@RequestParam("file") MultipartFile file){
+    public String uploadFile(@RequestParam(value = "file") MultipartFile file,@RequestParam(value = "file1") MultipartFile file1){
         if(file.isEmpty()){
             return "上传失败，请选择文件";
         }
-        String fileName = file.getOriginalFilename();
+        String nodename = file.getOriginalFilename();
 
-        String filePath = "G:/中国电科CETC/springboot_neo4j/src/main/resources/static/";
+        String path = "G:/neo4j-community-3.5.6/import/";
 
-        File dest = new File(filePath+fileName);
+        String relname = file1.getOriginalFilename();
+
+        File dest_node = new File(path+nodename);
+
+        File dest_rel = new File(path+relname);
         try {
-            file.transferTo(dest);
-            upLoadFile.loadcsvToNeo4j();
+            file.transferTo(dest_node);
+            file1.transferTo(dest_rel);
+            upLoadFile.loadcsvToNeo4j(nodename,relname);
             return "上传成功！";
         } catch (IOException e) {
             e.printStackTrace();

@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
+
 @Controller
 
 public class PersonController {
@@ -58,7 +60,7 @@ public class PersonController {
     PersonConnectivity connectivity;
     @PostMapping("/ifConnnective")
     @ResponseBody
-    public boolean IFconnective(HttpServletRequest request){
+    public List<String> IFconnective(HttpServletRequest request){
         String startnode = request.getParameter("startnode");
         String endnode = request.getParameter("endnode");
         return connectivity.ifConnective(startnode, endnode);
