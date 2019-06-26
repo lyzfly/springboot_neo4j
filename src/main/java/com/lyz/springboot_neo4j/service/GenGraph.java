@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,7 +27,7 @@ public class GenGraph {
             FileOutputStream outputStream = new FileOutputStream(file);
             List<Integer> list = new ArrayList<Integer>();
             StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < 100000; i++) {
+            for (int i = 0; i < 20000; i++) {
                 int base = 1;
                 Random rand = new Random();
                 int add_parm1 = rand.nextInt(10000);
@@ -47,6 +45,17 @@ public class GenGraph {
             e.printStackTrace();
         }
         return file;
+    }
+
+    public void readitem(String filename) throws IOException {
+        try (FileReader fr = new FileReader(new File(filename))) {
+            BufferedReader br = new BufferedReader(fr);
+            String line = br.readLine();
+            String arr[] = line.split(",");
+            for(String a:arr){
+                System.out.println(a);
+            }
+        }
     }
 
    /* public static void gengraph(Driver driver) throws IOException {

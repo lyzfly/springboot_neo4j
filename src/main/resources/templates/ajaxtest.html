@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/js/jquery.min.js"></script>
+</head>
+<body>
+<input type="file" name="imageFile" id="imageFile" form="uploadFileFrm" value="imageFile" style="width: 300px; height: 38px;" >
+<input type="text" name="user_id" id="user_id_chip_image"   form="uploadFileFrm" hidden>
+<a  id="submitButton"onclick="uploadFileFun()">提交</a>
+<form action="uploadFile" method="post"enctype="multipart/form-data" id="uploadFileFrm" name="uploadFileFrm">
+</form>
+<script type="text/javascript">
+    function uploadFileFun(){
+        var photo=document.getElementById("imageFile").value;
+        if(""==photo){
+            alert("请选择上传图片");
+            return false;
+        }else  if (!/\.(gif|jpg|jpeg|png|GIF|JPG|PNG)$/.test(photo)) {
+            alert("图片类型必须是.gif,jpeg,jpg,png中的一种");
+            return false;
+        }else{
+            var form = new FormData(document.getElementById("uploadFileFrm"));
+            $("#submitButton").hide();
+
+            $.ajax({
+                type: "POST",
+                url: "<c:url value='/。。。/。。。。' />",
+                data:form,// 序列化表单值
+                processData:false,
+                contentType:false,
+                error: function(request) {
+                    alert("上传文件失败 ");
+                    window.location.reload();
+                },
+                success: function(data) {
+                    setTimeout(function(){
+                        $("#submitButton").show();
+                        $("#image1").append("<img src='"+data+"'  />");
+                    },3000);
+                }
+            });
+        }
+    }
+</script>   
+</body>
+</html>

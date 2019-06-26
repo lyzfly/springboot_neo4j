@@ -20,7 +20,8 @@ public class SpringbootNeo4jApplicationTests {
     private UpLoadFile upLoadFile;
     @Test
     public void contextLoads() {
-        upLoadFile.loadcsvToNeo4j("node.csv", "relation.csv");
+        String arr[] = {"souce","target"};
+        upLoadFile.loadcsvToNeo4j("relation.csv", arr);
     }
 
     @Autowired
@@ -34,8 +35,9 @@ public class SpringbootNeo4jApplicationTests {
     private GenGraph genGraph;
     @Test
     public void setGenGraph() throws IOException {
-        genGraph.writeToCsv();
+        genGraph.readitem("relation.csv");
     }
+
 
     @Autowired
     private PersonConnectivity personConnectivity;

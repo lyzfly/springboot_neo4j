@@ -5,11 +5,13 @@
     <title>节点连通性度量</title>
 </head>
 <body>
-<form action="ifConnnective" method="post">
-    请输入需要查询节点的关键度量：<br>
-    <input type="text" name="startnode">
-    <input type="text" name="endnode">
-    <input type="submit" value="Submit">
-</form>
+    <div id="header">
+        <h1 style="margin: 0px;color:black;text-align: center;font-size: 75px;background: deepskyblue">节点连通性评估</h1>
+    </div>
+    <form action="ifConnnective" method="post">
+        起始节点<input type="text" name="startnode" placeholder="请输入起始节点"><br>
+        终止节点<input type="text" name="endnode" placeholder="请输入终止节点"><br>
+        <input type="submit" value="提交">
+    </form>
 </body>
 </html>

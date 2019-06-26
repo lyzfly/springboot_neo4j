@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.neo4j.driver.v1.Values.parameters;
+
+
+/**
+ shortestpath 路径发现
+*/
 @Service
 public class PersonConnectivity {
 
@@ -23,12 +28,11 @@ public class PersonConnectivity {
             try(Transaction tx = session.beginTransaction()){
                 StatementResult result = tx.run(query,parameters("x",start,"y",end));
                 List<String> list = new ArrayList<String>();
-                if(result.hasNext()){
+                while(result.hasNext()){
                     Record record = result.next();
                     String name = record.get("name").toString();
                     System.out.println(name);
                     list.add(name);
-                    flag = true;
                 }
                 tx.success();
                 return list;

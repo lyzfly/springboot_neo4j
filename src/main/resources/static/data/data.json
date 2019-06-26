@@ -1,0 +1,2 @@
+{"nodes":[{"name":"张三","id":1971},{"name":"李四","id":1972}],
+  "links":[{"source":1971,"target":1972,"type":"friend"}]}

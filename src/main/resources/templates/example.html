@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+
+<body>
+<h1>欢迎</h1>
+<hr>
+<br>
+<form>
+    num<input type="text" id="num"/><br>
+    age<input type="text" id="age"/><br>
+    peer<input type="text" id="peer"/><br>
+    <input type="button" value="提交" id="button"/>
+</form>
+</body>
+<script type="text/javascript" src="../static/js/jquery-2.1.4.min.js"></script>
+<script>
+    $(function(){
+        $("#button").click(function(){
+            alert("alert")
+            var mYnum=$("#num").val()
+            var mYage=$("#age").val()
+            var mYpeer=$("#peer").val()
+            print(mYage)
+            $.ajax({
+                type:"post",
+                url:"/testajax",
+                data:{num:mYnum,age:mYage,peer:mYpeer},
+                dataType:'json',//dataType:"json",使得返回来的数据格式为json 如果不 添加该条属性，则返回来的为字符串
+                success:function(data){
+                    console.log(data["num"]) //取值可以.key值
+                    console.log(data["age"]) //取值可以.key值
+                    console.log(data["peer"]) //取值可以.key值
+                },
+                error:function(data){
+                    console.log("error")
+                    console.log(data)
+                }
+            })
+        })
+    })
+</script>
+</html>

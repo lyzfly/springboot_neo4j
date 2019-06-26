@@ -1,5 +1,6 @@
 package com.lyz.springboot_neo4j.contollers;
 
+import com.lyz.springboot_neo4j.service.PersonCommunity;
 import com.lyz.springboot_neo4j.service.PersonConnectivity;
 import com.lyz.springboot_neo4j.service.PersonImportance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class PersonController {
     public String index(){
         return "index";
     }
+    @RequestMapping(value = "/index1")
+    public String index1(){return "d3";}
 
     @RequestMapping(value = "/importance")
     public String  importance(){
@@ -44,7 +47,7 @@ public class PersonController {
 
     @RequestMapping(value = "/getOnePersonImportance",method = RequestMethod.POST)
     @ResponseBody
-    public double findOneNodeImportance(HttpServletRequest request){
+    public String findOneNodeImportance(HttpServletRequest request){
 
         String person_name = request.getParameter("person_name");
         return personImportance.findOnePersonImportance(person_name);
@@ -64,5 +67,13 @@ public class PersonController {
         String startnode = request.getParameter("startnode");
         String endnode = request.getParameter("endnode");
         return connectivity.ifConnective(startnode, endnode);
+    }
+
+    @Autowired
+    PersonCommunity personCommunity;
+    @RequestMapping(value = "/getallcommunity",method =RequestMethod.GET)
+    @ResponseBody
+    public String getallCommunity(){
+        return personCommunity.findOnePersonClass();
     }
 }

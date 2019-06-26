@@ -1,4 +1,4 @@
-package com.lyz.springboot_neo4j.util;
+package com.lyz.springboot_neo4j.config;
 
 import org.neo4j.driver.v1.AuthTokens;
 import org.neo4j.driver.v1.Driver;

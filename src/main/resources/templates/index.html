@@ -4,13 +4,28 @@
     <link rel="icon" href="">
     <meta charset="UTF-8">
     <title>Neo4j图算法</title>
-    <script>
-        function submitForm(){
-            var form = document.getElementById("myform");
-            form.submit();
+    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        function doupload() {
+            alert("成功！")
+            var formdata = new FormData($("#upload")[0]);
+            $.ajax({
+                url:'/neo4jdemo/uploadfile',
+                type:"POST",
+                data: formdata,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 nnnnnn                     ,
+                async:false,
+                cache:false,
+                contentType:false,
+                processData:false,
+                success:function (data){
+                    alert("aa");
+                },
+                error:function () {
+                    alert("bb");
+                }
+            });
         }
     </script>
-
     <style>
 
         .header {
@@ -61,9 +76,6 @@
             transform: scale(1.5,1.5);
         }
 
-        .label{
-
-        }
     </style>
 </head>
 <body style="margin: 0px;padding: 0px">
@@ -85,7 +97,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点重要性评估</p>
         </div>
         <div class="block2">
-            <a href="Community"><img class="bigger" src="img/cluster.png"></a>
+            <a href="community"><img class="bigger" src="img/cluster.png"></a>
             <br>
             <br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点相关度评估</p>
@@ -96,13 +108,20 @@
             <br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点连通性评估</p>
         </div>
+
         <div class=" block4">
-            <form action="uploadfile" method="post" enctype="multipart/form-data">
-                <p>上传节点文件数据</p> <input type="file" name="file" value="上传节点文件数据"><br><br>
-                <p>上传关系文件数据</p><input type="file" name="file1" value="上传关系文件数据"><br><br>
-                <input type="submit" value="提交">
+            <form enctype="multipart/form-data" id="upload">
+                <p>上传关系文件数据</p><input type="file" name="file" value="上传关系文件数据"><br><br>
+                <button onclick="doupload()">提交</button>
             </form>
+
         </div>
+
+
+        <div>
+
+        </div>
+
     </div>
     <div id="foot">
     </div>

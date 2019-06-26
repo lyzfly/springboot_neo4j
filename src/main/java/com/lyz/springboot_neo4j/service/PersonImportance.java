@@ -1,5 +1,7 @@
 package com.lyz.springboot_neo4j.service;
 
+import com.alibaba.fastjson.JSON;
+import com.lyz.springboot_neo4j.util.Neo4jUtil;
 import org.neo4j.driver.v1.*;
 import static org.neo4j.driver.v1.Values.parameters;
 
@@ -12,16 +14,17 @@ import java.util.HashMap;
 public class PersonImportance {
     @Autowired
     Driver driver;
-    public double findOnePersonImportance(String name){
-
-        String query = "CALL algo.degree.stream(\"Person\", \"In\", {direction: \"incoming\"})\n" +
-                "YIELD nodeId, score\n" + "WHERE algo.asNode(nodeId).name={x}"+
-                "RETURN score AS followers";
+    @Autowired
+    Neo4jUtil neo4jUtil;
+    public String findOnePersonImportance(String name){
+        HashMap<String,Object> hashMap;
+        String query = "MATCH (u1:Person)<-[r:Follow]-(u2:Person) WHERE u1.name={x} RETURN *";
         try(Session session = driver.session()){
             try(Transaction tx = session.beginTransaction()){
                 StatementResult result = tx.run(query, parameters("x",name));
-                double degree = Double.parseDouble(result.next().get("followers").toString());
-                return degree;
+                hashMap = neo4jUtil.GetGraphNodeAndShip(result);
+                String re= JSON.toJSONString(hashMap);
+                return re;
             }
         }
     }
@@ -63,7 +66,9 @@ public class PersonImportance {
                     if (max <= value) {
                         max = value;
                         hashMap.put(key, value);
-                    } else {break;}
+                    } else {
+                        break;
+                    }
                 }
             }
         }
