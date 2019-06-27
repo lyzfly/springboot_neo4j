@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
 import java.io.IOException;
 
 @RunWith(SpringRunner.class)
@@ -21,7 +22,7 @@ public class SpringbootNeo4jApplicationTests {
     @Test
     public void contextLoads() {
         String arr[] = {"souce","target"};
-        upLoadFile.loadcsvToNeo4j("relation.csv", arr);
+        upLoadFile.loadcsvToNeo4j("relation.csv");
     }
 
     @Autowired
@@ -31,8 +32,15 @@ public class SpringbootNeo4jApplicationTests {
         deleteGraph.delete();
     }
 
+
     @Autowired
     private GenGraph genGraph;
+
+
+    @Test
+    public void gencsv() throws IOException{
+        genGraph.writeToCsv();
+    }
     @Test
     public void setGenGraph() throws IOException {
         genGraph.readitem("relation.csv");

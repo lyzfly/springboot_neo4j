@@ -6,9 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+
 
 @Controller
 public class PickUploadController {
@@ -17,12 +17,13 @@ public class PickUploadController {
     public String upload(){
         return "upload";
     }
+
     @Autowired
     UpLoadFile upLoadFile;
-
     @ResponseBody
     @RequestMapping(value = "/uploadfile",method = RequestMethod.POST)
-    public String uploadFile(@RequestParam("file") MultipartFile file){
+
+    public String uploadFile(@RequestParam( value = "file") MultipartFile file){
         if(file.isEmpty()){
             return "上传失败，请选择文件";
         }
@@ -31,14 +32,14 @@ public class PickUploadController {
 
         System.out.println(relname);
 
-        String path = "G:/neo4j-community-3.5.6/import/";
+        String path = "/bigdata/neo4j-community-3.5.5/import/";
 
         File dest_rel = new File(path+relname);
 
         try {
             file.transferTo(dest_rel);
             String arr[] = upLoadFile.readitem(dest_rel);
-            upLoadFile.loadcsvToNeo4j(relname,arr);
+            upLoadFile.loadcsvToNeo4j(relname);
             return "上传成功！";
         } catch (IOException e) {
             e.printStackTrace();

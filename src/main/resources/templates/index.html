@@ -4,16 +4,14 @@
     <link rel="icon" href="">
     <meta charset="UTF-8">
     <title>Neo4j图算法</title>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+    <script type="text/javascript" >
         function doupload() {
-            var formdata = new FormData($("#upload")[0]);
-            alert("aa")
+            var form = new FormData(document.getElementById("#upload"));
             $.ajax({
-                url:'/neo4jdemo/uploadfile',
-                type:"POST",
-                data: formdata,
-                enctype: 'multipart/form-data',
+                type:"post",
+                url:"/neo4jdemo/uploadfile",
+                data:form,
                 async:false,
                 cache:false,
                 contentType:false,
@@ -111,12 +109,12 @@
         </div>
 
         <div class=" block4">
-            <form id="upload" enctype="multipart/form-data" method="post">
+            <form enctype="multipart/form-data" id="upload">
                 <p>上传关系文件数据</p><input type="file" name="file" value="上传关系文件数据"><br><br>
                 <button onclick="doupload()">提交</button>
             </form>
-
         </div>
+
 
         <div>
 

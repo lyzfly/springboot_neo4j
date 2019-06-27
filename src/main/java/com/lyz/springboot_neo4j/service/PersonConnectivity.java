@@ -24,11 +24,11 @@ public class PersonConnectivity {
                 "CALL algo.shortestPath.stream(start, end,'cost')\n" +
                 "YIELD nodeId, cost\n" +
                 "RETURN algo.asNode(nodeId).name AS name, cost";
-        try(Session session = driver.session()){
-            try(Transaction tx = session.beginTransaction()){
-                StatementResult result = tx.run(query,parameters("x",start,"y",end));
+        try(Session session = driver.session()) {
+            try (Transaction tx = session.beginTransaction()) {
+                StatementResult result = tx.run(query, parameters("x", start, "y", end));
                 List<String> list = new ArrayList<String>();
-                while(result.hasNext()){
+                while (result.hasNext()) {
                     Record record = result.next();
                     String name = record.get("name").toString();
                     System.out.println(name);
@@ -39,5 +39,4 @@ public class PersonConnectivity {
             }
         }
     }
-
 }

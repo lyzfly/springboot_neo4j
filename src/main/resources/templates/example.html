@@ -3,7 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+    <script>
+        $(function(){
+            $("#button").click(function(){
+                alert("message!")
+                var mYnum=$("#num").val()
+                var mYage=$("#age").val()
+                var mYpeer=$("#peer").val()
+                $.ajax({
+                    type:"post",
+                    url:"/neo4jdemo/testajax",
+                    data:{num:mYnum,age:mYage,peer:mYpeer},
+                    dataType:'json',//dataType:"json",使得返回来的数据格式为json 如果不 添加该条属性，则返回来的为字符串
+                    success:function(data){
+                        console.log(data["num"]) //取值可以.key值
+                        console.log(data["age"]) //取值可以.key值
+                        console.log(data["peer"]) //取值可以.key值
+                    },
+                    error:function(data){
+                        console.log("error")
+                        console.log(data)
+                    }
+                })
+            })
+        })
+    </script>
 </head>
 
 <body>
@@ -17,32 +42,5 @@
     <input type="button" value="提交" id="button"/>
 </form>
 </body>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script>
-    $(function(){
-        $("#button").click(function(){
-            alert("alert")
-            var mYnum=$("#num").val()
-            var mYage=$("#age").val()
-            var mYpeer=$("#peer").val()
-            print(mYage)
-            $.ajax({
-                type:"post",
-                url:"/neo4jdemo/testajax",
-                data:{num:mYnum,age:mYage,peer:mYpeer},
-                dataType:'json',//dataType:"json",使得返回来的数据格式为json 如果不 添加该条属性，则返回来的为字符串
-                success:function(data){
-                    console.log(data["num"]) //取值可以.key值
-                    console.log(data["age"]) //取值可以.key值
-                    console.log(data["peer"]) //取值可以.key值
-                },
-                error:function(data){
-                    console.log("error")
-                    console.log(data)
-                }
 
-            })
-        })
-    })
-</script>
 </html>
