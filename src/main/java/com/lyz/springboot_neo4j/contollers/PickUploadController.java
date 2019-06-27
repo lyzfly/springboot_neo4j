@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 
@@ -18,9 +19,10 @@ public class PickUploadController {
     }
     @Autowired
     UpLoadFile upLoadFile;
-    @PostMapping("/uploadfile")
+
     @ResponseBody
-    public String uploadFile(@RequestParam(value = "file") MultipartFile file){
+    @RequestMapping(value = "/uploadfile",method = RequestMethod.POST)
+    public String uploadFile(@RequestParam("file") MultipartFile file){
         if(file.isEmpty()){
             return "上传失败，请选择文件";
         }

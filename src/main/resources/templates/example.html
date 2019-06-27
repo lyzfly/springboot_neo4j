@@ -17,7 +17,7 @@
     <input type="button" value="提交" id="button"/>
 </form>
 </body>
-<script type="text/javascript" src="../static/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
     $(function(){
         $("#button").click(function(){
@@ -28,7 +28,7 @@
             print(mYage)
             $.ajax({
                 type:"post",
-                url:"/testajax",
+                url:"/neo4jdemo/testajax",
                 data:{num:mYnum,age:mYage,peer:mYpeer},
                 dataType:'json',//dataType:"json",使得返回来的数据格式为json 如果不 添加该条属性，则返回来的为字符串
                 success:function(data){
@@ -40,6 +40,7 @@
                     console.log("error")
                     console.log(data)
                 }
+
             })
         })
     })

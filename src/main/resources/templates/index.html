@@ -4,21 +4,22 @@
     <link rel="icon" href="">
     <meta charset="UTF-8">
     <title>Neo4j图算法</title>
-    <script type="text/javascript" src="../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript">
         function doupload() {
-            alert("成功！")
             var formdata = new FormData($("#upload")[0]);
+            alert("aa")
             $.ajax({
                 url:'/neo4jdemo/uploadfile',
                 type:"POST",
-                data: formdata,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 nnnnnn                     ,
+                data: formdata,
+                enctype: 'multipart/form-data',
                 async:false,
                 cache:false,
                 contentType:false,
                 processData:false,
                 success:function (data){
-                    alert("aa");
+                    alert(data);
                 },
                 error:function () {
                     alert("bb");
@@ -110,13 +111,12 @@
         </div>
 
         <div class=" block4">
-            <form enctype="multipart/form-data" id="upload">
+            <form id="upload" enctype="multipart/form-data" method="post">
                 <p>上传关系文件数据</p><input type="file" name="file" value="上传关系文件数据"><br><br>
                 <button onclick="doupload()">提交</button>
             </form>
 
         </div>
-
 
         <div>
 
