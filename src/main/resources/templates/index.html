@@ -4,14 +4,16 @@
     <link rel="icon" href="">
     <meta charset="UTF-8">
     <title>Neo4j图算法</title>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
-    <script type="text/javascript" >
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
         function doupload() {
-            var form = new FormData(document.getElementById("#upload"));
+            var formdata = new FormData($("#upload")[0]);
+            alert("aa")
             $.ajax({
-                type:"post",
-                url:"/neo4jdemo/uploadfile",
-                data:form,
+                url:'/neo4jdemo/uploadfile',
+                type:"POST",
+                data: formdata,
+                enctype: 'multipart/form-data',
                 async:false,
                 cache:false,
                 contentType:false,
@@ -26,7 +28,6 @@
         }
     </script>
     <style>
-
         .header {
             background: deepskyblue;
             color: black;
@@ -34,31 +35,26 @@
             margin: 0px;
             padding: 0px;
         }
-
         .content{
         }
-
         .block1{
             position: relative;
             left:200px;
             top:100px;
             float:left;
         }
-
         .block2{
             position: relative;
             left: 500px;
             top: 100px;
             float:left;
         }
-
         .block3{
             position: relative;
             left: 750px;
             top: 100px;
             float:left;
         }
-
         .block4{
             position: absolute;
             left: 200px;
@@ -68,60 +64,58 @@
         img.bigger{
             width: 327px;
             height: 327px;
-           transition: transform 1s;
+            transition: transform 1s;
         }
-
         .bigger:hover{
             transform: scale(1.5,1.5);
         }
-
     </style>
 </head>
 <body style="margin: 0px;padding: 0px">
-    <div class="header">
+<div class="header">
 
-            <a href="https://neo4j.com/">
-                <div> <img src="https://neo4j.com/wp-content/themes/neo4jweb/assets/images/neo4j-logo-2015.png" align="right" width="200" height="100" ></div>
-            </a>
+    <a href="https://neo4j.com/">
+        <div> <img src="https://neo4j.com/wp-content/themes/neo4jweb/assets/images/neo4j-logo-2015.png" align="right" width="200" height="100" ></div>
+    </a>
 
-        <div><h1 style="font-size: 100px;margin: 0px">Neo4j Graph Algorithm</h1></div>
+    <div><h1 style="font-size: 100px;margin: 0px">Neo4j Graph Algorithm</h1></div>
 
+
+</div>
+<div class="content">
+    <div class="block1">
+        <a href="importance"><img class="bigger" src="img/degree.png"></a>
+        <br>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点重要性评估</p>
+    </div>
+    <div class="block2">
+        <a href="community"><img class="bigger" src="img/cluster.png"></a>
+        <br>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点相关度评估</p>
+    </div>
+    <div class="block3">
+        <a href="connectivity"><img class="bigger" src="img/path.png"></a>
+        <br>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点连通性评估</p>
+    </div>
+
+    <div class=" block4">
+        <form id="upload" enctype="multipart/form-data" method="post">
+            <p>上传关系文件数据</p><input type="file" name="file" value="上传关系文件数据"><br><br>
+            <button onclick="doupload()">提交</button>
+        </form>
 
     </div>
-    <div class="content">
-        <div class="block1">
-            <a href="importance"><img class="bigger" src="img/degree.png"></a>
-            <br>
-            <br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点重要性评估</p>
-        </div>
-        <div class="block2">
-            <a href="community"><img class="bigger" src="img/cluster.png"></a>
-            <br>
-            <br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点相关度评估</p>
-        </div>
-        <div class="block3">
-            <a href="connectivity"><img class="bigger" src="img/path.png"></a>
-            <br>
-            <br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点连通性评估</p>
-        </div>
 
-        <div class=" block4">
-            <form enctype="multipart/form-data" id="upload">
-                <p>上传关系文件数据</p><input type="file" name="file" value="上传关系文件数据"><br><br>
-                <button onclick="doupload()">提交</button>
-            </form>
-        </div>
-
-
-        <div>
-
-        </div>
+    <div>
 
     </div>
-    <div id="foot">
-    </div>
+
+</div>
+<div id="foot">
+</div>
 </body>
 </html>
