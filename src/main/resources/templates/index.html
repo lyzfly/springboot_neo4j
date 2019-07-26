@@ -8,7 +8,6 @@
     <script type="text/javascript">
         function doupload() {
             var formdata = new FormData($("#upload")[0]);
-            alert("aa")
             $.ajax({
                 url:'/neo4jdemo/uploadfile',
                 type:"POST",
@@ -22,7 +21,7 @@
                     alert(data);
                 },
                 error:function () {
-                    alert("bb");
+                    alert("错误");
                 }
             });
         }
@@ -67,7 +66,7 @@
             transition: transform 1s;
         }
         .bigger:hover{
-            transform: scale(1.5,1.5);
+            transform: scale(1.2,1.2);
         }
     </style>
 </head>
@@ -100,6 +99,13 @@
         <br>
         <br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点连通性评估</p>
+    </div>
+
+    <div  class="block4">
+        <a href="similarity"><img class="bigger" src="img/sim.png"></a>
+        <br>
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点相似性评估</p>
     </div>
 
     <div class=" block4">

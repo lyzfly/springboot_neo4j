@@ -14,5 +14,6 @@ public class StaticResourceConfig implements WebMvcConfigurer {
        /* if (!registry.hasMappingForPattern("/static/**")) {
             registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
         }*/
+
     }
 }

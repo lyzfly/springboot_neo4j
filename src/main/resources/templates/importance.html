@@ -22,17 +22,29 @@
 
     <div id="content">
         <div>
-            <a href="FindTheMostImport">
-                <button type="button" style="color: grey;width: 30%;height: 100px;">获取关键度最大的节点</button>
-            </a>
+            <form action="DegreeMostImportantance" method="post">
+                专家单位<input type="text" name="orgname">
+                专家数量<input type="text" name="cnt">
+                <input type="submit" value="提交">
+            </form>
         </div>
+
         <div>
+                <form action="PageRankMostImportantance" method="post">
+                    专家单位<input type="text" name="orgnizationname">
+                    专家数量<input type="text" name="cnt">
+                    <input type="submit" value="提交">
+                </form>
+        </div>
+
+        <div style="position: absolute">
             <form action="getOnePersonImportance" method="post">
-            请输入需要查询节点的关键度量：<br>
-            <input type="text" name="person_name">
-            <input type="submit" value="Submit">
+                专家姓名<input type="text" name="expert_name"><br>
+                专家单位<input type="text" name="orgnizationname"><br>
+                <input type="submit" value="提交">
             </form>
         </div>
     </div>
+
 </body>
 </html>

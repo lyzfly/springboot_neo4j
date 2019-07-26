@@ -11,9 +11,9 @@ import java.util.Map;
 
     public class AjaxController {
 
-        @RequestMapping(value = "/ajax")
+        @RequestMapping(value = "/ajaxtest")
         public String f(){
-            return "example";
+            return "ajaxtest";
         }
 
         @ResponseBody

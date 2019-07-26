@@ -1,9 +1,6 @@
 package com.lyz.springboot_neo4j;
 
-import com.lyz.springboot_neo4j.service.DeleteGraph;
-import com.lyz.springboot_neo4j.service.GenGraph;
-import com.lyz.springboot_neo4j.service.PersonConnectivity;
-import com.lyz.springboot_neo4j.service.UpLoadFile;
+import com.lyz.springboot_neo4j.service.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +9,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -52,5 +50,29 @@ public class SpringbootNeo4jApplicationTests {
     @Test
     public void connective(){
         personConnectivity.ifConnective("2", "3");
+    }
+
+
+    @Autowired
+    private KeJiQingBao keJiQingBao;
+    @Test
+    public void setKeJiQingBao(){
+
+        keJiQingBao.f();
+    }
+
+    @Autowired
+    private  SqlServerService sqlServerService;
+
+    @Test
+    public void sqlservice() throws SQLException {
+        sqlServerService.find_keywords();
+    }
+
+    @Autowired
+    private SqlServer2CSV sqlServer2CSV;
+    @Test
+    public void f() throws IOException {
+        sqlServer2CSV.ReadCsv(new File("/home/zhzy/Documents/keywords.csv"),new File("/home/zhzy/Documents/result.csv"));
     }
 }

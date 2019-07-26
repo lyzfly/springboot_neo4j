@@ -32,7 +32,7 @@ public class PickUploadController {
 
         System.out.println(relname);
 
-        String path = "/bigdata/neo4j-community-3.5.5/import/";
+        String path = "/usr/neo4j3.1.0/import/";
 
         File dest_rel = new File(path+relname);
 
