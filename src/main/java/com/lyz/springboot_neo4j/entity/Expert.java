@@ -9,6 +9,9 @@ public class Expert {
     private String orgnizationname;
     private String  orgnizationid;
     private double importance;
+    private String community;
+    private String similarnode;
+    private String similarity;
 
     public String getName() {
         return name;
@@ -41,4 +44,29 @@ public class Expert {
     public void setImportance(double importance) {
         this.importance = importance;
     }
+
+    public String getCommunity() {
+        return community;
+    }
+
+    public void setCommunity(String community) {
+        this.community = community;
+    }
+
+    public String getSimilarnode() {
+        return similarnode;
+    }
+
+    public void setSimilarnode(String similarnode) {
+        this.similarnode = similarnode;
+    }
+
+    public String getSimilarity() {
+        return similarity;
+    }
+
+    public void setSimilarity(String similarity) {
+        this.similarity = similarity;
+    }
 }
+    

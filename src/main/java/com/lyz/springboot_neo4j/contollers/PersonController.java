@@ -4,12 +4,12 @@ import com.lyz.springboot_neo4j.entity.Expert;
 import com.lyz.springboot_neo4j.service.PersonCommunity;
 import com.lyz.springboot_neo4j.service.PersonConnectivity;
 import com.lyz.springboot_neo4j.service.PersonImportance;
+import com.lyz.springboot_neo4j.service.PersonSimilarity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -38,6 +38,11 @@ public class PersonController {
         return "connectivity";
     }
 
+    @RequestMapping(value = "/similarity")
+    public String similarity(){
+        return "similarity";
+    }
+
     @Autowired PersonImportance personImportance;
 
     @RequestMapping(value = "/getOnePersonImportance",method = RequestMethod.POST)
@@ -49,19 +54,18 @@ public class PersonController {
         return personImportance.findOnePersonImportance(expert_name,orgnizationname);
     }
 
-    @RequestMapping(value = "/DegreeMostImportantance",method = RequestMethod.POST)
+    @RequestMapping(value = "/DegreeMostImportance",method = RequestMethod.POST)
     @ResponseBody
     public List<Expert> DegreeMostImportant(HttpServletRequest request) {
         String orgname = request.getParameter("orgname");
         int cnt = Integer.valueOf(request.getParameter("cnt"));
-        request.getParameter("cnt");
         return personImportance.DegreeMostImportant(orgname,cnt);
     }
 
-    @RequestMapping(value = "/PageRankMostImportantance")
+    @RequestMapping(value = "/PageRankMostImportance",method = RequestMethod.POST)
     @ResponseBody
-    public HashMap<String,Double> PageRankMostImportant(HttpServletRequest request){
-        String orgnizationname = request.getParameter("orgnizationname");
+    public List<Expert> PageRankMostImportant(HttpServletRequest request){
+        String orgnizationname = request.getParameter("orgname");
         int cnt = Integer.valueOf(request.getParameter("cnt"));
         return personImportance.PageRankMostImportant(orgnizationname,cnt);
     }
@@ -74,17 +78,30 @@ public class PersonController {
     PersonConnectivity connectivity;
     @PostMapping("/ifConnnective")
     @ResponseBody
-    public List<String> IFconnective(HttpServletRequest request){
-        String startnode = request.getParameter("startnode");
-        String endnode = request.getParameter("endnode");
-        return connectivity.ifConnective(startnode, endnode);
+    public List<Expert> IFconnective(HttpServletRequest request){
+        String startorgname = request.getParameter("startorgname");
+        String startname = request.getParameter("startname");
+        String endorgname = request.getParameter("endorgname");
+        String endname = request.getParameter("endname");
+        return connectivity.ifConnective(startname, startorgname,endname,endorgname);
     }
 
     @Autowired
     PersonCommunity personCommunity;
     @RequestMapping(value = "/getallcommunity",method =RequestMethod.GET)
     @ResponseBody
-    public String getallCommunity(){
+    public List<Expert> getallCommunity(){
         return personCommunity.findOnePersonClass();
     }
+
+    @Autowired
+    PersonSimilarity personSimilarity;
+    @RequestMapping(value = "/getsimilarnode",method = RequestMethod.POST)
+    @ResponseBody
+    public List<Expert> getsimilarnode(HttpServletRequest request){
+        String orgname = request.getParameter("orgname");
+        String name = request.getParameter("name");
+        return personSimilarity.findSim(name,orgname);
+    }
+
 }

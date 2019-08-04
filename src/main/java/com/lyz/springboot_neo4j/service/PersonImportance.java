@@ -75,14 +75,14 @@ public class PersonImportance {
             if (followers != before) {
                 count++;
             }
-            list.add(expert);
             before = followers;
+            list.add(expert);
         }
         return list;
     }
 
-    public HashMap<String,Double> PageRankMostImportant(String orgname,int cnt){
-        HashMap<String,Double> hashMap = new HashMap<>();
+    public List<Expert> PageRankMostImportant(String orgname,int cnt){
+        List<Expert> list = new ArrayList<>();
         String query;
         query = String.format("CALL algo.pageRank.stream('EXPERT', 'EXPERT_COOPERATE_COUNT', " +
                 "{iterations:20, dampingFactor:0.85})\n" +
@@ -90,18 +90,53 @@ public class PersonImportance {
                 "RETURN algo.asNode(nodeId).name AS name,algo.asNode(nodeId).orgnizationname as orgname,score\n" +
                 "ORDER BY score DESC",orgname);
         StatementResult result = neo4jUtil.excuteCypherSql(query);
+        int count=0;
         double before = Double.MIN_VALUE;
-        int count = 0;
         while(result.hasNext()&&count<cnt){
             Record record = result.next();
-            Double value = Double.valueOf(record.get("score").toString());
-            String key = record.get("name").toString()+record.get("orgname").toString();
-            if(before!=value){
+            Expert expert = new Expert();
+            String name = record.get("name").toString();
+            Double importance = Double.valueOf(record.get("score").toString());
+            System.out.println(name);
+            System.out.println(importance);
+            expert.setName(name);
+            expert.setImportance(importance);
+            list.add(expert);
+            if(importance!=before){
                 count++;
             }
-            hashMap.put(key,value);
-            before = value;
+            before = importance;
         }
-        return hashMap;
+        return list;
+    }
+
+    public List<Expert> Betweenness(String orgname,int cnt){
+        List<Expert> list = new ArrayList<>();
+        String query;
+        query = String.format("CALL algo.degree.stream(\"EXPERT\",\"In\",{direction:\"incoming\"})\n" +
+                "YIELD nodeId,score\n" +"WHERE algo.asNode(nodeId).orgnizationname='%s'"+
+                "RETURN algo.asNode(nodeId).name AS name," +"algo.asNode(nodeId).orgnizationid AS orgid,"+
+                "algo.asNode(nodeId).orgnizationname as orgname,score AS followers\n" +
+                "ORDER BY followers DESC",orgname);
+        StatementResult result = neo4jUtil.excuteCypherSql(query);
+        double before = Double.MIN_VALUE;
+        int count = 0;
+        while (result.hasNext()&&count<cnt) {
+            Record record = result.next();
+            Expert expert = new Expert();
+            String name = record.get("name").toString();
+            String id = record.get("orgid").toString();
+            Double followers = Double.valueOf(record.get("followers").toString());
+            expert.setName(name);
+            expert.setOrgnizationname(orgname);
+            expert.setImportance(followers);
+            expert.setOrgnizationid(id);
+            if (followers != before) {
+                count++;
+            }
+            before = followers;
+            list.add(expert);
+        }
+        return list;
     }
 }
