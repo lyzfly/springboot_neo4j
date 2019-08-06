@@ -49,7 +49,7 @@ public class SpringbootNeo4jApplicationTests {
     private PersonConnectivity personConnectivity;
     @Test
     public void connective(){
-        personConnectivity.ifConnective("2", "3");
+        personConnectivity.ifConnective("李武建", "中国电子科技集团公司第三十八研究所","王凯","中国电子科技集团公司第三十八研究所");
     }
 
 
@@ -62,17 +62,11 @@ public class SpringbootNeo4jApplicationTests {
     }
 
     @Autowired
-    private  SqlServerService sqlServerService;
-
+    private PersonImportance personImportance;
     @Test
-    public void sqlservice() throws SQLException {
-        sqlServerService.find_keywords();
+    public void f(){
+        personImportance.PageRankMostImportant("中国电子科技集团公司第三十八研究所", 10);
     }
 
-    @Autowired
-    private SqlServer2CSV sqlServer2CSV;
-    @Test
-    public void f() throws IOException {
-        sqlServer2CSV.ReadCsv(new File("/home/zhzy/Documents/keywords.csv"),new File("/home/zhzy/Documents/result.csv"));
-    }
+
 }

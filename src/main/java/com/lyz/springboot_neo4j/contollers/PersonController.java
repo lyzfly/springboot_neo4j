@@ -103,5 +103,4 @@ public class PersonController {
         String name = request.getParameter("name");
         return personSimilarity.findSim(name,orgname);
     }
-
 }

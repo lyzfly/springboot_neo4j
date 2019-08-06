@@ -3,15 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>节点连通性度量</title>
+
+    <style>
+        #header{
+            background: deepskyblue;
+            color: black;
+            text-align: center;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
 </head>
-<body>
+<body style="margin: 0px;padding: 0px">
     <div id="header">
-        <h1 style="margin: 0px;color:black;text-align: center;font-size: 75px;background: deepskyblue">节点连通性评估</h1>
+        <h1 style="margin: 0px;font-size: 75px;">节点连通性评估</h1>
     </div>
     <form action="ifConnnective" method="post">
-        起始节点<input type="text" name="startnode" placeholder="请输入起始节点"><br>
-        终止节点<input type="text" name="endnode" placeholder="请输入终止节点"><br>
-        <input type="submit" value="提交">
+        <label>
+            <span>专家A:</span>
+            <span>专家单位名称</span>
+            <input type="text" name="startorgname" placeholder="请输入专家单位名称">
+            <span>专家姓名</span>
+            <input type="text" name="startname" placeholder="请输入专家姓名">
+        </label><br>
+        <label>
+            <span>专家B:</span>
+            <span>专家单位名称</span>
+            <input type="text" name="endorgname" placeholder="请输入专家单位名称">
+            <span>专家姓名</span>
+            <input type="text" name="endname" placeholder="请输入专家姓名">
+        </label><br>
+        <label>
+            <input type="submit" value="提交">
+        </label>
     </form>
 </body>
 </html>

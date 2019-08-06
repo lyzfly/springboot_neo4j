@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>节点相似性评估</title>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <script type="text/javascript"></script>
+
+</head>
+<body>
+    <div id="header">
+        <h1 style="margin: 0px;color:black;text-align: center;font-size: 75px;background: deepskyblue">节点相似性评估</h1>
+    </div>
+    <form action="getsimilarnode" method="post">
+        <label>
+            <span style="font-size: 30px">中心度算法:</span>
+            <select id="slt" style="font-size: 30px" required>
+                <option value="Jaccord相似性">Jaccord相似性</option>
+                <option value="Jaccord相似性">Jaccord相似性</option>
+            </select>
+        </label>
+        <label>
+            <span>专家单位名称</span>
+            <input type="text" name="orgname" placeholder="请输入专家单位名称">
+            <span>专家姓名</span>
+            <input type="text" name="name" placeholder="请输入专家姓名">
+        </label><br>
+        <label>
+            <input type="submit" value="提交">
+        </label>
+    </form>
+</body>
+</html>

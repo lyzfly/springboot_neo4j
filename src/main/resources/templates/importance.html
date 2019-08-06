@@ -5,46 +5,95 @@
     <title>节点重要性评估</title>
 
     <style>
-
         #header{
             background: deepskyblue;
-        }
-
-        .content{
-
+            color: black;
+            text-align: center;
+            margin: 0px;
+            padding: 0px;
         }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        function refurbishIndex(){
+            var orgname = document.getElementById("degreeorgname").value;
+            var cnt = document.getElementById("degreecnt").value;
+            var itemvalue = document.getElementById("slt");
+            var str;
+            var url;
+            for(var i=0;i<itemvalue.options.length;i++){
+
+                if(itemvalue.options[i].selected){
+                    str = itemvalue.options[i].value;
+                    if(str=="Degree"){
+                        url="DegreeMostImportance";
+                    }else if(str=="PageRank"){
+                        url="PageRankMostImportance";
+                    }else if(str=="Betweeness"){
+                        url="BetweenessMostImportance";
+                    }else{
+                        url="ClosenessMostImportance";
+                    }
+                }
+            }
+            $.ajax({
+                type:"post",
+                url:url,
+                data:{
+                    orgname:orgname,
+                    cnt:cnt
+                },
+                datatype:"json",
+                async: false,
+                success:function (data) {
+                    var str="<table border='1px' align='center'>"+"<tr><th style='font-size: 30px'>专家姓名</th><th style='font-size: 30px'>中心度</th></tr>";
+                    for (i in data) {
+                        str += "<tr>" +
+                            "<td >" + data[i].name + "</td>" +
+                            "<td>" + data[i].importance+ "</td>" +
+                        "</tr>";
+                    }
+                    str +="</table>";
+                    document.getElementById("degreetable").innerHTML=str;
+                }
+            });
+        }
+    </script>
 </head>
-<body style="margin: 0">
+<body style="margin: 0px;padding: 0px">
     <div id="header">
-        <h1 style="margin: 0px;color:black;text-align: center;font-size: 75px">节点重要性评估</h1>
+        <h1 style="font-size: 75px;margin: 0px">节点重要性评估</h1>
     </div>
 
     <div id="content">
         <div>
-            <form action="DegreeMostImportantance" method="post">
-                专家单位<input type="text" name="orgname">
-                专家数量<input type="text" name="cnt">
-                <input type="submit" value="提交">
+            <form>
+                <label>
+                    <span style="font-size: 30px">中心度算法:</span>
+                    <select id="slt" style="font-size: 30px" required>
+                        <option value="Degree">Degree</option>
+                        <option value="PageRank">PageRank</option>
+                        <option value="Betweeness">Betweeness</option>
+                        <option value="Closeness">Closeness</option>
+                    </select>
+                 </label>
+                <label>
+                    <span style="font-size: 30px">专家单位:</span>
+                    <input type="text" name="orgname" id="degreeorgname" style="font-size: 30px">
+                </label>
+                <label>
+                    <span style="font-size: 30px">专家数量:</span>
+                    <input type="text" name="cnt" id="degreecnt" style="font-size: 30px">
+                </label>
+                <label>
+                    <span>&nbsp;</span>
+                    <input type="button" value="提交" onclick="refurbishIndex()" style="font-size: 30px">
+                </label>
             </form>
-        </div>
 
-        <div>
-                <form action="PageRankMostImportantance" method="post">
-                    专家单位<input type="text" name="orgnizationname">
-                    专家数量<input type="text" name="cnt">
-                    <input type="submit" value="提交">
-                </form>
-        </div>
-
-        <div style="position: absolute">
-            <form action="getOnePersonImportance" method="post">
-                专家姓名<input type="text" name="expert_name"><br>
-                专家单位<input type="text" name="orgnizationname"><br>
-                <input type="submit" value="提交">
-            </form>
+            <div id="degreetable"></div>
         </div>
     </div>
-
 </body>
 </html>
