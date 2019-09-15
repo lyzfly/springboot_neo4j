@@ -7,9 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -64,8 +62,23 @@ public class SpringbootNeo4jApplicationTests {
     @Autowired
     private PersonImportance personImportance;
     @Test
-    public void f(){
+    public void ww(){
         personImportance.PageRankMostImportant("中国电子科技集团公司第三十八研究所", 10);
+    }
+
+
+    @Autowired
+    private PersonCommunity personCommunity;
+    @Test
+    public void qq(){
+        personCommunity.lpa("中国电子科技集团公司第三十八研究所","张晓光");
+    }
+
+    @Autowired
+    private PersonSimilarity personSimilarity;
+    @Test
+    public void gg(){
+        personSimilarity.JaccordSim("张晓光","中国电子科技集团公司第三十八研究所");
     }
 
 

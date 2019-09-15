@@ -13,29 +13,61 @@
             padding: 0px;
         }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+        function connective() {
+            var startorgname = document.getElementById("startorgname").value;
+            var startname = document.getElementById("startname").value;
+            var endorgname = document.getElementById("endorgname").value;
+            var endname = document.getElementById("endname").value;
+            $.ajax({
+                type:"post",
+                url:"ifConnnective",
+                data:{
+                    startorgname:startorgname,
+                    startname:startname,
+                    endorgname:endorgname,
+                    endname:endname
+                },
+                datatype:"json",
+                async:"false",
+                success:function (data) {
+                    var str="<table border='1px' align='center'>"+"<tr><th style='font-size: 30px'>专家姓名</th><th style='font-size: 30px'>专家单位</th></tr>";
+                    for(i in data){
+                        str+="<tr>"+"<td>"+data[i].name+"</td>"+"<td>"+data[i].orgnizationname+"</td>"+"</tr>";
+                    }
+                    str+="</table>"
+                    document.getElementById("path").innerHTML=str;
+                }
+
+            })
+        }
+    </script>    
 </head>
 <body style="margin: 0px;padding: 0px">
     <div id="header">
         <h1 style="margin: 0px;font-size: 75px;">节点连通性评估</h1>
     </div>
-    <form action="ifConnnective" method="post">
-        <label>
+    <form>
+        <label style="font-size: 30px">
             <span>专家A:</span>
-            <span>专家单位名称</span>
-            <input type="text" name="startorgname" placeholder="请输入专家单位名称">
-            <span>专家姓名</span>
-            <input type="text" name="startname" placeholder="请输入专家姓名">
+            <span style="font-size: 30px">专家单位名称</span>
+            <input type="text" name="startorgname" id="startorgname" placeholder="请输入专家单位名称" style="font-size: 30px">
+            <span style="font-size: 30px">专家姓名</span>
+            <input type="text" name="startname" id="startname" placeholder="请输入专家姓名" style="font-size: 30px">
         </label><br>
-        <label>
-            <span>专家B:</span>
-            <span>专家单位名称</span>
-            <input type="text" name="endorgname" placeholder="请输入专家单位名称">
-            <span>专家姓名</span>
-            <input type="text" name="endname" placeholder="请输入专家姓名">
+        <label style="font-size: 30px">
+            <span style="font-size: 30px">专家B:</span>
+            <span style="font-size: 30px">专家单位名称</span>
+            <input type="text" name="endorgname" id="endorgname" placeholder="请输入专家单位名称" style="font-size: 30px">
+            <span style="font-size: 30px">专家姓名</span>
+            <input type="text" name="endname" id="endname" placeholder="请输入专家姓名" style="font-size: 30px">
         </label><br>
-        <label>
-            <input type="submit" value="提交">
+        <label style="font-size: 30px">
+            <input type="button" value="提交" onclick="connective()" style="font-size: 30px">
         </label>
     </form>
+    <label id="path"></label>
 </body>
 </html>

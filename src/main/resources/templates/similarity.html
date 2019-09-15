@@ -4,32 +4,83 @@
     <meta charset="UTF-8">
     <title>节点相似性评估</title>
 
+    <style>
+        #header{
+            background: deepskyblue;
+            color: black;
+            text-align: center;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+        function similarity() {
+
+            var orgname = document.getElementById("orgname").value;
+            var name = document.getElementById("name").value;
+            var itemvalue = document.getElementById("slt");
+            var url
+            for(var i=0;i<itemvalue.options.length;i++){
+
+                if(itemvalue.options[i].selected){
+                    var str = itemvalue.options[i].value;
+                    if(str=="Degree相似性"){
+                        url="degreesim";
+                    }else if(str=="Jaccord相似性"){
+                        url="jaccordsim";
+                    }
+                }
+            }
+            $.ajax({
+                type: "post",
+                url: url,
+                data: {
+                    orgname: orgname,
+                    name: name
+                },
+                datatype: "json",
+                async:"false",
+                success:function (data) {
+
+                    var str="<table border='1px' align='center'>"+"<tr><th style='font-size: 30px'>专家姓名</th><th style='font-size: 30px'>专家单位</th><th style='font-size: 30px'>相似度</th></tr>";
+                    for(i in data){
+                        str+="<tr>"+"<td>"+data[i].similarnodename+"</td>"+"<td>"+data[i].similarnodeorg+"</td>"+"<td>"+data[i].similarity+"</td>"+"</tr>";
+                    }
+                    str+="</table>"
+                    document.getElementById("similar").innerHTML=str;
+                }
+            })
+        }
+    </script>
+
+
 
 </head>
-<body>
+<body  style="margin: 0px;padding: 0px">
     <div id="header">
-        <h1 style="margin: 0px;color:black;text-align: center;font-size: 75px;background: deepskyblue">节点相似性评估</h1>
+        <h1 style="font-size: 75px;margin: 0px">节点相似性评估</h1>
     </div>
-    <form action="getsimilarnode" method="post">
+    <form>
         <label>
-            <span style="font-size: 30px">中心度算法:</span>
+            <span style="font-size: 30px">相似性算法:</span>
             <select id="slt" style="font-size: 30px" required>
-                <option value="Jaccord相似性">Jaccord相似性</option>
+                <option value="Degree相似性">Degree相似性</option>
                 <option value="Jaccord相似性">Jaccord相似性</option>
             </select>
         </label>
         <label>
-            <span>专家单位名称</span>
-            <input type="text" name="orgname" placeholder="请输入专家单位名称">
-            <span>专家姓名</span>
-            <input type="text" name="name" placeholder="请输入专家姓名">
-        </label><br>
+            <span style="font-size: 30px">专家单位名称:</span>
+            <input type="text" name="orgname" id="orgname" style="font-size: 30px" placeholder="请输入专家单位名称">
+            <span style="font-size: 30px">专家姓名:</span>
+            <input type="text" name="name" id="name" style="font-size: 30px" placeholder="请输入专家姓名">
+        </label>
         <label>
-            <input type="submit" value="提交">
+            <input type="button" value="提交" style="font-size: 30px" onclick="similarity()">
         </label>
     </form>
+    <div id="similar"></div>
 </body>
 </html>

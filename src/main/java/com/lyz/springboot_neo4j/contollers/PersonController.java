@@ -1,10 +1,7 @@
 package com.lyz.springboot_neo4j.contollers;
 
 import com.lyz.springboot_neo4j.entity.Expert;
-import com.lyz.springboot_neo4j.service.PersonCommunity;
-import com.lyz.springboot_neo4j.service.PersonConnectivity;
-import com.lyz.springboot_neo4j.service.PersonImportance;
-import com.lyz.springboot_neo4j.service.PersonSimilarity;
+import com.lyz.springboot_neo4j.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -76,7 +73,7 @@ public class PersonController {
 
     @Autowired
     PersonConnectivity connectivity;
-    @PostMapping("/ifConnnective")
+    @RequestMapping(value = "/ifConnnective",method = RequestMethod.POST)
     @ResponseBody
     public List<Expert> IFconnective(HttpServletRequest request){
         String startorgname = request.getParameter("startorgname");
@@ -88,19 +85,37 @@ public class PersonController {
 
     @Autowired
     PersonCommunity personCommunity;
-    @RequestMapping(value = "/getallcommunity",method =RequestMethod.GET)
+    @RequestMapping(value = "/LouvainCommunity",method =RequestMethod.POST)
     @ResponseBody
-    public List<Expert> getallCommunity(){
-        return personCommunity.findOnePersonClass();
+    public List<Expert> louvain(HttpServletRequest request){
+        String orgname = request.getParameter("orgname");
+        String name = request.getParameter("name");
+        return personCommunity.louvain(orgname,name);
+    }
+
+    @RequestMapping(value = "/LPACommunity",method =RequestMethod.POST)
+    @ResponseBody
+    public List<Expert> lpa(HttpServletRequest request){
+        String orgname = request.getParameter("orgname");
+        String name = request.getParameter("name");
+        return personCommunity.lpa(orgname,name);
     }
 
     @Autowired
     PersonSimilarity personSimilarity;
-    @RequestMapping(value = "/getsimilarnode",method = RequestMethod.POST)
+    @RequestMapping(value = "/jaccordsim",method = RequestMethod.POST)
     @ResponseBody
-    public List<Expert> getsimilarnode(HttpServletRequest request){
+    public List<Expert> jaccordsim(HttpServletRequest request){
         String orgname = request.getParameter("orgname");
         String name = request.getParameter("name");
-        return personSimilarity.findSim(name,orgname);
+        return personSimilarity.JaccordSim(name,orgname);
+    }
+
+    @RequestMapping(value = "/degreesim",method = RequestMethod.POST)
+    @ResponseBody
+    public List<Expert> degree(HttpServletRequest request){
+        String orgname = request.getParameter("orgname");
+        String name = request.getParameter("name");
+        return personSimilarity.DegreeSim(name,orgname);
     }
 }

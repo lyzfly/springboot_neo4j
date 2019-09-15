@@ -23,7 +23,6 @@ public class PersonConnectivity {
     @Autowired
     Neo4jUtil neo4jUtil;
     public List<Expert> ifConnective(String startname,String startorg,String endname,String endorg){
-        boolean flag = false;
         String query = String.format("MATCH (start:EXPERT{name:'%s',orgnizationname:'%s'}), " +
                 "(end:EXPERT{name:'%s',orgnizationname:'%s'})\n" +
                 "CALL algo.shortestPath.stream(start, end,'cost')\n" +
@@ -38,10 +37,8 @@ public class PersonConnectivity {
             String orgname = record.get("orgname").toString();
             expert.setName(name);
             expert.setOrgnizationname(orgname);
-            System.out.println(name);
             list.add(expert);
         }
-        System.out.println(list);
         return list;
     }
 }

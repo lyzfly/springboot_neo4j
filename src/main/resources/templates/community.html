@@ -13,6 +13,51 @@
             padding: 0px;
         }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript">
+
+
+        function getcommunity() {
+
+            var str
+            var url
+            var orgname = document.getElementById("orgname").value;
+            var name = document.getElementById("name").value;
+            var itemvalue = document.getElementById("slt");
+            for(var i=0;i<itemvalue.options.length;i++){
+                if(itemvalue.options[i].selected){
+                    str = itemvalue.options[i].value;
+                    if(str=="Louvain"){
+                        url="LouvainCommunity";
+                    }else if(str=="LPA"){
+                        url="LPACommunity";
+                    }
+                }
+            }
+
+            $.ajax({
+                type:"post",
+                url:url,
+                data:{
+                    orgname:orgname,
+                    name:name
+                },
+                datatype:"json",
+                success:function (data) {
+                    var str="<table border='1px' align='center'>"+"<tr><th style='font-size: 30px'>专家姓名</th><th style='font-size: 30px'>专家单位</th></tr>";
+                    for (i in data) {
+                        str += "<tr>" +
+                            "<td >" + data[i].name + "</td>" +
+                            "<td>" + data[i].orgnizationname + "</td>" +
+                            "</tr>";
+                    }
+                    str +="</table>";
+                    document.getElementById("community").innerHTML=str;
+                }
+            })
+        }
+    </script>
 </head>
 
 <body style="margin: 0px;padding: 0px">
@@ -21,14 +66,30 @@
     </div>
 
     <div id="content">
-        <div>
-            <span></span>
-        </div>
-
+        <form>
+            <label>
+                <span style="font-size: 30px">社区发现算法:</span>
+                <select id="slt" style="font-size: 30px" required>
+                    <option value="Louvain">Louvain</option>
+                    <option value="LPA">LPA</option>
+                </select>
+            </label>
+            <label>
+                <span style="font-size: 30px">专家单位:</span>
+                <input type="text" name="orgname" id="orgname" style="font-size: 30px">
+            </label>
+            <label>
+                <span style="font-size: 30px">专家姓名:</span>
+                <input type="text" name="name" id="name" style="font-size: 30px">
+            </label>
+            <label>
+                <span>&nbsp;</span>
+                <input type="button" value="提交" onclick="getcommunity()" style="font-size: 30px">
+            </label>
+        </form>
+        <div id="community"></div>
     </div>
-    <a href="getallcommunity">
-        <input type="button" value="获取节点及所属社区">
-    </a>
 
+    
 </body>
 </html>
