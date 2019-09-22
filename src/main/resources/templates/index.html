@@ -9,7 +9,7 @@
         function doupload() {
             var formdata = new FormData($("#upload")[0]);
             $.ajax({
-                url:'/neo4jdemo/uploadfile',
+                url:'/neo4jdemo/upload_nodefile',
                 type:"POST",
                 data: formdata,
                 enctype: 'multipart/form-data',
@@ -25,6 +25,59 @@
                 }
             });
         }
+
+        function doupload1() {
+            var formdata = new FormData($("#upload1")[0]);
+            $.ajax({
+                url:'/neo4jdemo/upload_relfile',
+                type:"POST",
+                data: formdata,
+                enctype: 'multipart/form-data',
+                async:false,
+                cache:false,
+                contentType:false,
+                processData:false,
+                success:function (data){
+                    alert(data);
+                },
+                error:function () {
+                    alert("错误");
+                }
+            });
+        }
+
+        function　deletenode(){
+            var node = document.getElementById("node").value;
+            $.ajax({
+                url:'/neo4jdemo/delete_node',
+                type:"POST",
+                data:{
+                    node:node
+                },
+                datatype:"json",
+                async:false,
+                success:function () {
+                    alert("删除成功!")
+                }
+            });
+        }
+
+        function　deleteedge(){
+            var edge = document.getElementById("edge").value;
+            $.ajax({
+                url:'/neo4jdemo/delete_edge',
+                type:"POST",
+                data:{
+                    edge:edge
+                },
+                datatype:"json",
+                async:false,
+                success:function () {
+                    alert("删除成功!")
+                }
+            });
+        }
+
     </script>
     <style>
         .header {
@@ -59,6 +112,16 @@
             left: 700px;
             top: 100px;
             float: left;
+        }
+        .block5{
+            position : absolute;
+            left:100px;
+            top: 700px;
+        }
+        .block6{
+            position : absolute;
+            left:100px;
+            top: 850px;
         }
         img.bigger{
             width: 327px;
@@ -107,14 +170,32 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点相似性评估</p>
     </div>
 
-    <!--<div class=" block5">
-        <form id="upload" enctype="multipart/form-data" method="post">
-            <p>上传关系文件数据</p><input type="file" name="file" value="上传关系文件数据"><br><br>
+
+
+    <div class=" block5">
+        <form id="upload" enctype="multipart/form-data" method="post" >
+            添加节点：<input type="file" name="nodefile" value="上传节点文件">
             <button onclick="doupload()">提交</button>
         </form>
+        <br>
+        <form id="upload1" enctype="multipart/form-data" method="post" >
+            添加边：<input type="file" name="relfile" value="上传关系文件">
+            <button  onclick="doupload1()">提交</button>
+        </form>
+    </div>
 
-    </div>-->
-
+    <div class="block6">
+        <form method="post">
+            删除节点<input type="text" id="node" name="node">
+            <button  onclick="deletenode()" >删除节点</button>
+        </form>
+        <br>
+        <form>
+            删除边<input type="text" id="edge" name="edge">
+            <button onclick="deleteedge()">删除边</button>
+        </form>
+        <br>
+    </div>
 </div>
 <div id="foot">
 </div>

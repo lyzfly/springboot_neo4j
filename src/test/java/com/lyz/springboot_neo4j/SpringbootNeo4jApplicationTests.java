@@ -13,13 +13,13 @@ import java.io.IOException;
 @SpringBootTest
 public class SpringbootNeo4jApplicationTests {
 
-    @Autowired
+    /*@Autowired
     private UpLoadFile upLoadFile;
     @Test
     public void contextLoads() {
         String arr[] = {"souce","target"};
         upLoadFile.loadcsvToNeo4j("relation.csv");
-    }
+    }*/
 
     @Autowired
     private DeleteGraph deleteGraph;

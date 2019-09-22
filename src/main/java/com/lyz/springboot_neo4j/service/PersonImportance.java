@@ -54,7 +54,7 @@ public class PersonImportance {
     public List<Expert> DegreeMostImportant(String orgname, int cnt) {
         List<Expert> list = new ArrayList<>();
         String query;
-        query = String.format("CALL algo.degree.stream(\"EXPERT\",\"In\",{direction:\"incoming\"})\n" +
+        query = String.format("CALL algo.degree.stream(\"EXPERT\",\"In\",{direction:\"both\"})\n" +
                 "YIELD nodeId,score\n" +"WHERE algo.asNode(nodeId).orgnizationname='%s'"+
                 "RETURN algo.asNode(nodeId).name AS name," +"algo.asNode(nodeId).orgnizationid AS orgid,"+
                 "algo.asNode(nodeId).orgnizationname as orgname,score AS followers\n" +

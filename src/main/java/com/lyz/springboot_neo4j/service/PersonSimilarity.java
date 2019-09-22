@@ -22,9 +22,9 @@ public class PersonSimilarity {
 
     public List<Expert>  JaccordSim(String name,String orgname){
         List<Expert> list = new ArrayList<>();
-        String query = String.format("MATCH (p1:EXPERT {name: '%s',orgnizationname:'%s'})-[:EXPERT_COOPERATE_COUNT]->(cuisine1)\n" +
+        String query = String.format("MATCH (p1:EXPERT {name: '%s',orgnizationname:'%s'})-[r:rel]->(cuisine1)\n" +
                 "WITH p1, collect(id(cuisine1)) AS p1Cuisine\n" +
-                "MATCH (p2:EXPERT)-[:EXPERT_COOPERATE_COUNT]->(cuisine2) WHERE p1 <> p2\n" +
+                "WITH p1, collect(id(cuisine1)) AS p1Cuisine\n" +
                 "WITH p1, p1Cuisine, p2, collect(id(cuisine2)) AS p2Cuisine\n" +
                 "RETURN p1.name AS from,\n" +
                 "       p2.name AS to,\n" + "p2.orgnizationname AS orgname," +
@@ -48,7 +48,7 @@ public class PersonSimilarity {
         String to_name = null;
         String to_orgname = null;
         String query1 = String.format("match (n:EXPERT{name:'%s',orgnizationname:'%s'})"+
-                "-[:EXPERT_COOPERATE_COUNT]-(target) match (m)-[:EXPERT_COOPERATE_COUNT]-(target) return m.name as name," +
+                "-[r:rel]-(target) match (m)-[:rel]-(target) return m.name as name," +
                 "m.orgnizationname as orgname",name,orgname);
         StatementResult result = neo4jUtil.excuteCypherSql(query1);
         List<Expert> list1 = new ArrayList<>();
