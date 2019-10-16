@@ -1,6 +1,10 @@
 package com.lyz.springboot_neo4j;
 
 import com.lyz.springboot_neo4j.service.*;
+import com.lyz.springboot_neo4j.service.Algorithm.PersonCommunity;
+import com.lyz.springboot_neo4j.service.Algorithm.PersonConnectivity;
+import com.lyz.springboot_neo4j.service.Algorithm.PersonImportance;
+import com.lyz.springboot_neo4j.service.Algorithm.PersonSimilarity;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

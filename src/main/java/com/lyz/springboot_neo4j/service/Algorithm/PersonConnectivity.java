@@ -1,4 +1,4 @@
-package com.lyz.springboot_neo4j.service;
+package com.lyz.springboot_neo4j.service.Algorithm;
 
 import com.lyz.springboot_neo4j.entity.Expert;
 import com.lyz.springboot_neo4j.util.Neo4jUtil;

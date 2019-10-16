@@ -1,7 +1,10 @@
 package com.lyz.springboot_neo4j.contollers;
 
 import com.lyz.springboot_neo4j.entity.Expert;
-import com.lyz.springboot_neo4j.service.*;
+import com.lyz.springboot_neo4j.service.Algorithm.PersonCommunity;
+import com.lyz.springboot_neo4j.service.Algorithm.PersonConnectivity;
+import com.lyz.springboot_neo4j.service.Algorithm.PersonImportance;
+import com.lyz.springboot_neo4j.service.Algorithm.PersonSimilarity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +43,8 @@ public class PersonController {
         return "similarity";
     }
 
-    @Autowired PersonImportance personImportance;
+    @Autowired
+    PersonImportance personImportance;
 
     @RequestMapping(value = "/getOnePersonImportance",method = RequestMethod.POST)
     @ResponseBody

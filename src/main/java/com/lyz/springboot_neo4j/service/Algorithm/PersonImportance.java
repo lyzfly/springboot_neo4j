@@ -1,4 +1,4 @@
-package com.lyz.springboot_neo4j.service;
+package com.lyz.springboot_neo4j.service.Algorithm;
 
 import com.alibaba.fastjson.JSON;
 import com.lyz.springboot_neo4j.entity.Expert;
