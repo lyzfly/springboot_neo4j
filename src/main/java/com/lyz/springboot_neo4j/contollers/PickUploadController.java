@@ -26,8 +26,9 @@ public class PickUploadController {
     @RequestMapping(value = "/upload_nodefile",method = RequestMethod.POST)
     public String uploadNode(@RequestParam( value = "nodefile") MultipartFile file) {
         String filename = file.getOriginalFilename();
-        String path = "/bigdata/neo4j-community-3.5.7/import/";
+        String path = "/bigdata/neo4j/neo4j-community-3.5.7/import/";
         File dest_rel = new File(path + filename);
+        System.out.println(dest_rel);
         try {
             file.transferTo(dest_rel);
             upLoadFile.loadcsvToNeo4j_node(filename);
@@ -42,7 +43,7 @@ public class PickUploadController {
     @RequestMapping(value = "/upload_relfile",method = RequestMethod.POST)
     public String uploadFile1(@RequestParam( value = "relfile") MultipartFile file){
         String filename = file.getOriginalFilename();
-        String path = "/bigdata/neo4j-community-3.5.7/import/";
+        String path = "/bigdata/neo4j/neo4j-community-3.5.7/import/";
         File dest_rel = new File(path + filename);
         System.out.println(dest_rel.getPath());
         try {

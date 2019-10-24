@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Neo4jConfig {
-
     @Value("${spring.data.neo4j.username}")
     String username;
 

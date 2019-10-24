@@ -29,18 +29,6 @@ public class SpringbootNeo4jApplicationTests {
     }
 
 
-    @Autowired
-    private GenGraph genGraph;
-
-
-    @Test
-    public void gencsv() throws IOException{
-        genGraph.writeToCsv();
-    }
-    @Test
-    public void setGenGraph() throws IOException {
-        genGraph.readitem("relation.csv");
-    }
 
 
     @Autowired
@@ -51,13 +39,6 @@ public class SpringbootNeo4jApplicationTests {
     }
 
 
-    @Autowired
-    private KeJiQingBao keJiQingBao;
-    @Test
-    public void setKeJiQingBao(){
-
-        keJiQingBao.f();
-    }
 
     @Autowired
     private PersonImportance personImportance;

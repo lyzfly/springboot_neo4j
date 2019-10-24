@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.lyz.springboot_neo4j.entity.Expert;
 import com.lyz.springboot_neo4j.util.Neo4jUtil;
 import org.neo4j.driver.v1.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,27 +28,6 @@ public class PersonImportance {
         String re= JSON.toJSONString(hashMap);
         return re;
     }
-
-   /* public HashMap<String,String> findImportance() {
-        HashMap<String, String> hashMap = new HashMap<>();
-        String query = "CALL algo.degree.stream(\"Person\", \"In\", {direction: \"incoming\"})\n" +
-                "YIELD nodeId, score\n" +
-                "RETURN algo.asNode(nodeId).name AS name, score AS followers\n" +
-                "ORDER BY followers DESC";
-        try (Session session = driver.session()) {
-            try (Transaction tx = session.beginTransaction()) {
-                StatementResult result = tx.run(query);
-                tx.success();
-                while (result.hasNext()) {
-                    Record record = result.next();
-                    String key = record.get("name").toString();
-                    String value = record.get("followers").toString();
-                    hashMap.put(key, value);
-                }
-            }
-            return hashMap;
-        }
-    }*/
 
     public List<Expert> DegreeMostImportant(String orgname, int cnt) {
         List<Expert> list = new ArrayList<>();
@@ -84,7 +62,7 @@ public class PersonImportance {
     public List<Expert> PageRankMostImportant(String orgname,int cnt){
         List<Expert> list = new ArrayList<>();
         String query;
-        query = String.format("CALL algo.pageRank.stream('EXPERT', 'EXPERT_COOPERATE_COUNT', " +
+        query = String.format("CALL algo.pageRank.stream('EXPERT', 'rel', " +
                 "{iterations:20, dampingFactor:0.85})\n" +
                 "YIELD nodeId, score\n" + "WHERE algo.asNode(nodeId).orgnizationname='%s'"+
                 "RETURN algo.asNode(nodeId).name AS name,algo.asNode(nodeId).orgnizationname as orgname,score\n" +
@@ -97,6 +75,8 @@ public class PersonImportance {
             Expert expert = new Expert();
             String name = record.get("name").toString();
             Double importance = Double.valueOf(record.get("score").toString());
+            DecimalFormat df = new DecimalFormat("#.00");
+            importance = Double.valueOf(df.format(importance));
             System.out.println(name);
             System.out.println(importance);
             expert.setName(name);

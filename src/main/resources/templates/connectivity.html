@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>节点连通性度量</title>
+    <link rel="stylesheet" type="text/css" href="css/table.css"/>
 
     <style>
         #header{
@@ -33,7 +34,10 @@
                 datatype:"json",
                 async:"false",
                 success:function (data) {
-                    var str="<table border='1px' align='center'>"+"<tr><th style='font-size: 30px'>专家姓名</th><th style='font-size: 30px'>专家单位</th></tr>";
+                    if(data.length==0){
+                        alert("节点不存在！")
+                    }
+                    var str="<table>"+"<tr><th>专家姓名</th><th>专家单位</th></tr>";
                     for(i in data){
                         str+="<tr>"+"<td>"+data[i].name+"</td>"+"<td>"+data[i].orgnizationname+"</td>"+"</tr>";
                     }

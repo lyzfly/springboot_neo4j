@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <title>节点重要性评估</title>
+
+    <link rel="stylesheet" type="text/css" href="css/table.css" />
 
     <style>
         #header{
@@ -47,11 +50,14 @@
                 datatype:"json",
                 async: false,
                 success:function (data) {
-                    var str="<table border='1px' align='center'>"+"<tr><th style='font-size: 30px'>专家姓名</th><th style='font-size: 30px'>中心度</th></tr>";
+                    if(data.length==0){
+                        alert("节点不存在！");
+                    }
+                    var str="<table>"+"<tr><th>专家姓名</th><th>中心度</th></tr>";
                     for (i in data) {
                         str += "<tr>" +
-                            "<td >" + data[i].name + "</td>" +
-                            "<td>" + data[i].importance+ "</td>" +
+                            "<td>" + data[i].name + "</td>" +
+                            "<td>" + data[i].importance + "</td>" +
                         "</tr>";
                     }
                     str +="</table>";
@@ -81,7 +87,7 @@
                     <input type="text" name="orgname" id="degreeorgname" style="font-size: 30px">
                 </label>
                 <label>
-                    <span style="font-size: 30px">专家数量:</span>
+                    <span style="font-size: 30px">专家排名:</span>
                     <input type="text" name="cnt" id="degreecnt" style="font-size: 30px">
                 </label>
                 <label>
