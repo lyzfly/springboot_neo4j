@@ -13,6 +13,7 @@ import java.util.List;
 
 public class PersonController {
 
+
     @RequestMapping(value = "/index")
     public String index(){
         return "index";
@@ -53,7 +54,7 @@ public class PersonController {
 
     @RequestMapping(value = "/DegreeMostImportance",method = RequestMethod.POST)
     @ResponseBody
-    public List<Expert> DegreeMostImportant(HttpServletRequest request) {
+    public String DegreeMostImportant(HttpServletRequest request) {
         String orgname = request.getParameter("orgname");
         int cnt = Integer.valueOf(request.getParameter("cnt"));
         return personImportance.DegreeMostImportant(orgname,cnt);
@@ -87,7 +88,7 @@ public class PersonController {
     PersonCommunity personCommunity;
     @RequestMapping(value = "/LouvainCommunity",method =RequestMethod.POST)
     @ResponseBody
-    public List<Expert> louvain(HttpServletRequest request){
+    public String louvain(HttpServletRequest request){
         String orgname = request.getParameter("orgname");
         String name = request.getParameter("name");
         return personCommunity.louvain(orgname,name);

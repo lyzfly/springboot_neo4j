@@ -50,14 +50,17 @@
                 datatype:"json",
                 async: false,
                 success:function (data) {
+                    var jsonObj = JSON.parse( data );
+                    var list = jsonObj.expert_list;
                     if(data.length==0){
                         alert("节点不存在！");
                     }
                     var str="<table>"+"<tr><th>专家姓名</th><th>中心度</th></tr>";
-                    for (i in data) {
+                    for (i in list) {
+                        var item = JSON.parse(list[i])
                         str += "<tr>" +
-                            "<td>" + data[i].name + "</td>" +
-                            "<td>" + data[i].importance + "</td>" +
+                            "<td>" + item.name + "</td>" +
+                            "<td>" + item.followers + "</td>" +
                         "</tr>";
                     }
                     str +="</table>";
@@ -95,7 +98,6 @@
                     <input type="button" value="提交" onclick="refurbishIndex()" style="font-size: 30px">
                 </label>
             </form>
-
             <div id="degreetable"></div>
         </div>
     </div>

@@ -1,6 +1,7 @@
 package com.lyz.springboot_neo4j.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.lyz.springboot_neo4j.entity.Expert;
 import com.lyz.springboot_neo4j.util.Neo4jUtil;
 import org.neo4j.driver.v1.*;
@@ -29,7 +30,9 @@ public class PersonImportance {
         return re;
     }
 
-    public List<Expert> DegreeMostImportant(String orgname, int cnt) {
+    public String DegreeMostImportant(String orgname, int cnt) {
+        JSONObject re = new JSONObject();
+        List item_list = new ArrayList();
         List<Expert> list = new ArrayList<>();
         String query;
         query = String.format("CALL algo.degree.stream(\"EXPERT\",\"In\",{direction:\"both\"})\n" +
@@ -41,6 +44,7 @@ public class PersonImportance {
         double before = Double.MIN_VALUE;
         int count = 0;
         while (result.hasNext()&&count<cnt) {
+            JSONObject reitem = new JSONObject();
             Record record = result.next();
             Expert expert = new Expert();
             String name = record.get("name").toString();
@@ -50,13 +54,18 @@ public class PersonImportance {
             expert.setOrgnizationname(orgname);
             expert.setImportance(followers);
             expert.setOrgnizationid(id);
+            reitem.put("name",name);
+            reitem.put("followers",followers);
             if (followers != before) {
                 count++;
+                System.out.println("count"+count);
             }
             before = followers;
+            item_list.add(reitem.toJSONString());
             list.add(expert);
         }
-        return list;
+        re.put("expert_list",item_list);
+        return re.toJSONString();
     }
 
     public List<Expert> PageRankMostImportant(String orgname,int cnt){

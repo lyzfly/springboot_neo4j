@@ -45,14 +45,16 @@
                 },
                 datatype:"json",
                 success:function (data) {
+                    var jsonObj = JSON.parse( data );
+                    var list = jsonObj.expert_list;
                     if(data.length==0){
                         alert("节点不存在！")
                     }
                     var str="<table>"+"<tr><th>专家姓名</th><th>专家单位</th></tr>";
-                    for (i in data) {
+                    for (i in list) {
                         str += "<tr>" +
-                            "<td >" + data[i].name + "</td>" +
-                            "<td>" + data[i].orgnizationname + "</td>" +
+                            "<td >" + list[i].name + "</td>" +
+                            "<td>" + list[i].orgnizationname + "</td>" +
                             "</tr>";
                     }
                     str +="</table>";
