@@ -17,8 +17,8 @@ public class UpLoadFile {
     @Autowired
     Driver driver;
 
-    public void loadcsvToNeo4j_node(String nodefilename){
-        String nodefile = "file:///"+ nodefilename;
+    public void loadcsvToNeo4j_node(String nodefile){
+        //String nodefile = "file:///"+ nodefilename;
 
         String load_node = String.format("LOAD CSV WITH HEADERS FROM '%s' AS line " +
                 "MERGE(n:EXPERT{id:line.id,name:line.name,orgnizationid:line.orgnizationid,orgnizationname:line.orgnizationname})",nodefile);
@@ -30,10 +30,10 @@ public class UpLoadFile {
         }
     }
 
-    public void loadcsvToNeo4j_rel(String relfilename){
-        String relfile = "file:///"+relfilename;
+    public void loadcsvToNeo4j_rel(String relfile){
         String load_rel = String.format("LOAD CSV WITH HEADERS FROM '%s' AS line MATCH(from:EXPERT{id:line.fromid})," +
                 "(to:EXPERT{id:line.toid}) MERGE(from)-[r:rel{relation:line.relation}]->(to)",relfile);
+        System.out.println(load_rel);
         try(Session session = driver.session()){
             try(Transaction tx = session.beginTransaction()){
                 tx.run(load_rel);

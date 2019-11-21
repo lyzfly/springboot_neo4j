@@ -26,12 +26,15 @@ public class PickUploadController {
     @RequestMapping(value = "/upload_nodefile",method = RequestMethod.POST)
     public String uploadNode(@RequestParam( value = "nodefile") MultipartFile file) {
         String filename = file.getOriginalFilename();
-        String path = "/bigdata/neo4j/neo4j-community-3.5.7/import/";
-        File dest_rel = new File(path + filename);
-        System.out.println(dest_rel);
+        String projectpath = System.getProperty("user.dir");
+        String path = projectpath+"/src/main/resources/"+filename;
+        System.out.println(path);
+        File dest_rel = new File(path);
         try {
             file.transferTo(dest_rel);
-            upLoadFile.loadcsvToNeo4j_node(filename);
+            String filepath = "file:///" + path;
+            filepath = filepath.replace("\\", "/");
+            upLoadFile.loadcsvToNeo4j_node(filepath);
             return "添加成功！";
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,12 +46,16 @@ public class PickUploadController {
     @RequestMapping(value = "/upload_relfile",method = RequestMethod.POST)
     public String uploadFile1(@RequestParam( value = "relfile") MultipartFile file){
         String filename = file.getOriginalFilename();
-        String path = "/bigdata/neo4j/neo4j-community-3.5.7/import/";
-        File dest_rel = new File(path + filename);
+        String projectpath = System.getProperty("user.dir");
+        String path = projectpath+"/src/main/resources/"+filename;
+        File dest_rel = new File(path);
         System.out.println(dest_rel.getPath());
         try {
             file.transferTo(dest_rel);
-            upLoadFile.loadcsvToNeo4j_rel(filename);
+            String filepath = "file:///"+path;
+            filepath = filepath.replace("\\", "/");
+            System.out.println(filepath);
+            upLoadFile.loadcsvToNeo4j_rel(filepath);
             return "添加成功！";
         } catch (IOException e) {
             e.printStackTrace();
