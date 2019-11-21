@@ -30,13 +30,9 @@
                 if(itemvalue.options[i].selected){
                     str = itemvalue.options[i].value;
                     if(str=="Degree"){
-                        url="DegreeMostImportance";
+                        url="http://localhost:8080/neo4jdemo/DegreeMostImportance";
                     }else if(str=="PageRank"){
-                        url="PageRankMostImportance";
-                    }else if(str=="Betweeness"){
-                        url="BetweenessMostImportance";
-                    }else{
-                        url="ClosenessMostImportance";
+                        url="http://localhost:8080/neo4jdemo/PageRankMostImportance";
                     }
                 }
             }
@@ -52,7 +48,7 @@
                 success:function (data) {
                     var jsonObj = JSON.parse( data );
                     var list = jsonObj.expert_list;
-                    if(data.length==0){
+                    if(list.length==0){
                         alert("节点不存在！");
                     }
                     var str="<table>"+"<tr><th>专家姓名</th><th>中心度</th></tr>";
@@ -60,7 +56,7 @@
                         var item = JSON.parse(list[i])
                         str += "<tr>" +
                             "<td>" + item.name + "</td>" +
-                            "<td>" + item.followers + "</td>" +
+                            "<td>" + item.importance + "</td>" +
                         "</tr>";
                     }
                     str +="</table>";

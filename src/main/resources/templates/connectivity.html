@@ -22,9 +22,10 @@
             var startname = document.getElementById("startname").value;
             var endorgname = document.getElementById("endorgname").value;
             var endname = document.getElementById("endname").value;
+            var url = "http://localhost:8080/neo4jdemo/ifConnnective";
             $.ajax({
                 type:"post",
-                url:"ifConnnective",
+                url:url,
                 data:{
                     startorgname:startorgname,
                     startname:startname,
@@ -34,12 +35,14 @@
                 datatype:"json",
                 async:"false",
                 success:function (data) {
-                    if(data.length==0){
+                    var jsonObj = JSON.parse( data );
+                    var list = jsonObj.expert_list;
+                    if(list.length==0){
                         alert("节点不存在！")
                     }
                     var str="<table>"+"<tr><th>专家姓名</th><th>专家单位</th></tr>";
-                    for(i in data){
-                        str+="<tr>"+"<td>"+data[i].name+"</td>"+"<td>"+data[i].orgnizationname+"</td>"+"</tr>";
+                    for(i in list){
+                        str+="<tr>"+"<td>"+list[i].name+"</td>"+"<td>"+list[i].orgnizationname+"</td>"+"</tr>";
                     }
                     str+="</table>"
                     document.getElementById("path").innerHTML=str;

@@ -1,5 +1,6 @@
 package com.lyz.springboot_neo4j.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lyz.springboot_neo4j.entity.Expert;
 import com.lyz.springboot_neo4j.util.Neo4jUtil;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
@@ -22,8 +23,10 @@ public class PersonSimilarity {
     @Autowired
     Neo4jUtil neo4jUtil;
 
-    public List<Expert>  JaccordSim(String name,String orgname){
-        List<Expert> list = new ArrayList<>();
+    public String  JaccordSim(String name,String orgname){
+        JSONObject re = new JSONObject();
+        List item_list = new ArrayList();
+       // List<Expert> list = new ArrayList<>();
         try {
             String query = String.format("MATCH (p1:EXPERT {name: '%s',orgnizationname:'%s'})-[r:rel]-(cuisine1)\n" +
                     "WITH p1, collect(id(cuisine1)) AS p1Cuisine\n" +
@@ -36,24 +39,30 @@ public class PersonSimilarity {
             StatementResult result = neo4jUtil.excuteCypherSql(query);
             Expert expert = new Expert();
             Record record = result.next();
+            JSONObject reitem = new JSONObject();
             String similarnode_name = record.get("to").toString();
-            System.out.println(similarnode_name);
             String similarnode_org = record.get("orgname").toString();
-            System.out.println(similarnode_org);
             DecimalFormat df = new DecimalFormat("#.##");
-            expert.setSimilarnodename(similarnode_name);
+            String similarity = df.format(Double.valueOf(record.get("similarity").toString()));
+            reitem.put("similarnodename",similarnode_name);
+            reitem.put("similarnodeorg",similarnode_org);
+            reitem.put("similarity",similarity);
+            item_list.add(reitem);
+          /*  expert.setSimilarnodename(similarnode_name);
             expert.setSimilarnodeorg(similarnode_org);
             expert.setSimilarity(df.format(Double.valueOf(record.get("similarity").toString())));
-            list.add(expert);
+            list.add(expert);*/
+            re.put("expert_list",item_list);
         }catch (Exception e){
             logger.info("节点不存在！");
             System.out.println("节点不存在！");
-            return list;
         }
-        return list;
+        return re.toJSONString();
     }
 
-    public List<Expert> DegreeSim(String name,String orgname){
+    public String DegreeSim(String name,String orgname){
+        JSONObject re = new JSONObject();
+        List item_list = new ArrayList();
         List<Expert> list = new ArrayList<>();
         List<Expert> list1 = new ArrayList<>();
         try {
@@ -92,42 +101,51 @@ public class PersonSimilarity {
                 int count = Integer.valueOf(result1.next().get("num").toString());
                 hashMap.put(list1.get(i), count);
             }
-                List<Map.Entry<Expert, Integer>> list_Data = new ArrayList<>(hashMap.entrySet());
-                Collections.sort(list_Data, new Comparator<Map.Entry<Expert, Integer>>()
-                {
-                    @Override
-                    public int compare(Map.Entry<Expert, Integer> o1, Map.Entry<Expert, Integer> o2) {
-                        if (o2.getValue() != null && o1.getValue() != null && o2.getValue().compareTo(o1.getValue()) > 0) {
+            List<Map.Entry<Expert, Integer>> list_Data = new ArrayList<>(hashMap.entrySet());
+            Collections.sort(list_Data, new Comparator<Map.Entry<Expert, Integer>>()
+            {
+                @Override
+                public int compare(Map.Entry<Expert, Integer> o1, Map.Entry<Expert, Integer> o2) {
+                    if (o2.getValue() != null && o1.getValue() != null && o2.getValue().compareTo(o1.getValue()) > 0) {
 
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    }
-                });
-                System.out.println(list_Data);
-                Queue<Integer> queue = new LinkedList<>();
-                for(Map.Entry<Expert,Integer> item : list_Data){
-                    System.out.println("name"+item.getKey().getName());
-                    System.out.println("name1"+name);
-                    if(item.getKey().getName().replace("\"","").equals(name)){
-                        continue;
-                    }
-                    if(queue.isEmpty()||queue.peek()==item.getValue()){
-                        queue.add(item.getValue());
-                        Expert expert = new Expert();
-                        expert.setSimilarnodename(item.getKey().getName());
-                        expert.setSimilarnodeorg(item.getKey().getOrgnizationname());
-                        DecimalFormat df = new DecimalFormat("#.00");
-                        expert.setSimilarity(df.format(item.getValue()));
-                        list.add(expert);
-                    }else if(queue.peek()!=item.getValue()){
-                        break;
+                        return 1;
+                    } else {
+                        return -1;
                     }
                 }
+            });
+            System.out.println(list_Data);
+            Queue<Integer> queue = new LinkedList<>();
+            for(Map.Entry<Expert,Integer> item : list_Data){
+                JSONObject reitem = new JSONObject();
+                System.out.println("name"+item.getKey().getName());
+                System.out.println("name1"+name);
+                if(item.getKey().getName().replace("\"","").equals(name)){
+                    continue;
+                }
+                if(queue.isEmpty()||queue.peek()==item.getValue()){
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    String similarnode_name = item.getKey().getName();
+                    String similarnode_org = item.getKey().getOrgnizationname();
+                    String similarity = df.format(item.getValue());
+                    reitem.put("similarnodename",similarnode_name);
+                    reitem.put("similarnodeorg",similarnode_org);
+                    reitem.put("similarity",similarity);
+                    queue.add(item.getValue());
+                   /* Expert expert = new Expert();
+                    expert.setSimilarnodename(item.getKey().getName());
+                    expert.setSimilarnodeorg(item.getKey().getOrgnizationname());
+                    expert.setSimilarity(df.format(item.getValue()));
+                    list.add(expert);*/
+                }else if(queue.peek()!=item.getValue()){
+                    break;
+                }
+                item_list.add(reitem);
+            }
+            re.put("expert_list",item_list);
         }catch (Exception e){
             logger.info("节点不存在！");
         }
-        return list;
+        return re.toJSONString();
     }
 }

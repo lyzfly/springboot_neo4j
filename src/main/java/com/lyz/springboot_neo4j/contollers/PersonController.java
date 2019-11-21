@@ -62,7 +62,7 @@ public class PersonController {
 
     @RequestMapping(value = "/PageRankMostImportance",method = RequestMethod.POST)
     @ResponseBody
-    public List<Expert> PageRankMostImportant(HttpServletRequest request){
+    public String PageRankMostImportant(HttpServletRequest request){
         String orgnizationname = request.getParameter("orgname");
         int cnt = Integer.valueOf(request.getParameter("cnt"));
         return personImportance.PageRankMostImportant(orgnizationname,cnt);
@@ -76,7 +76,7 @@ public class PersonController {
     PersonConnectivity connectivity;
     @RequestMapping(value = "/ifConnnective",method = RequestMethod.POST)
     @ResponseBody
-    public List<Expert> IFconnective(HttpServletRequest request){
+    public String IFconnective(HttpServletRequest request){
         String startorgname = request.getParameter("startorgname");
         String startname = request.getParameter("startname");
         String endorgname = request.getParameter("endorgname");
@@ -96,7 +96,7 @@ public class PersonController {
 
     @RequestMapping(value = "/LPACommunity",method =RequestMethod.POST)
     @ResponseBody
-    public List<Expert> lpa(HttpServletRequest request){
+    public String lpa(HttpServletRequest request){
         String orgname = request.getParameter("orgname");
         String name = request.getParameter("name");
         return personCommunity.lpa(orgname,name);
@@ -106,7 +106,7 @@ public class PersonController {
     PersonSimilarity personSimilarity;
     @RequestMapping(value = "/jaccordsim",method = RequestMethod.POST)
     @ResponseBody
-    public List<Expert> jaccordsim(HttpServletRequest request){
+    public String jaccordsim(HttpServletRequest request){
         String orgname = request.getParameter("orgname");
         String name = request.getParameter("name");
         return personSimilarity.JaccordSim(name,orgname);
@@ -114,7 +114,7 @@ public class PersonController {
 
     @RequestMapping(value = "/degreesim",method = RequestMethod.POST)
     @ResponseBody
-    public List<Expert> degree(HttpServletRequest request){
+    public String degree(HttpServletRequest request){
         String orgname = request.getParameter("orgname");
         String name = request.getParameter("name");
         return personSimilarity.DegreeSim(name,orgname);

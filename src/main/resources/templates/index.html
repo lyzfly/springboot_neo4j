@@ -9,7 +9,7 @@
         function doupload() {
             var formdata = new FormData($("#upload")[0]);
             $.ajax({
-                url:'/neo4jdemo/upload_nodefile',
+                url:'http://localhost:8080/neo4jdemo/upload_nodefile',
                 type:"POST",
                 data: formdata,
                 enctype: 'multipart/form-data',
@@ -30,7 +30,7 @@
         function doupload1() {
             var formdata = new FormData($("#upload1")[0]);
             $.ajax({
-                url:'/neo4jdemo/upload_relfile',
+                url:'http://localhost:8080/neo4jdemo/upload_relfile',
                 type:"POST",
                 data: formdata,
                 enctype: 'multipart/form-data',
@@ -50,7 +50,7 @@
         function　deletenode(){
             var node = document.getElementById("node").value;
             $.ajax({
-                url:'/neo4jdemo/delete_node',
+                url:'http://localhost:8080/neo4jdemo/delete_node',
                 type:"POST",
                 data:{
                     node:node
@@ -66,7 +66,7 @@
         function　deleteedge(){
             var edge = document.getElementById("edge").value;
             $.ajax({
-                url:'/neo4jdemo/delete_edge',
+                url:'http://localhost:8080/neo4jdemo/delete_edge',
                 type:"POST",
                 data:{
                     edge:edge
@@ -142,26 +142,26 @@
 </div>
 <div class="content">
     <div class="block1">
-        <a href="importance"><img class="bigger" src="img/degree.png"></a>
+        <a href="importance.html"><img class="bigger" src="img/degree.png"></a>
         <br>
         <br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点重要性评估</p>
     </div>
     <div class="block2">
-        <a href="community"><img class="bigger" src="img/cluster.png"></a>
+        <a href="community.html"><img class="bigger" src="img/cluster.png"></a>
         <br>
         <br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点社区发现</p>
     </div>
     <div class="block3">
-        <a href="connectivity"><img class="bigger" src="img/path.png"></a>
+        <a href="connectivity.html"><img class="bigger" src="img/path.png"></a>
         <br>
         <br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点连通性评估</p>
     </div>
 
     <div  class="block4">
-        <a href="similarity"><img class="bigger" src="img/similar.png"></a>
+        <a href="similarity.html"><img class="bigger" src="img/similar.png"></a>
         <br>
         <br>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p style="font-size: 30px">节点相似性评估</p>
@@ -191,8 +191,5 @@
         </form>
         <br>
     </div>
-
-<div id="foot">
-</div>
 </body>
 </html>

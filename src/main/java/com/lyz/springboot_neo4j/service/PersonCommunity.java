@@ -12,8 +12,6 @@ import java.util.List;
 
 @Service
 public class PersonCommunity {
-    @Autowired
-    Driver driver;
 
     @Autowired
     Neo4jUtil neo4jUtil;
@@ -55,8 +53,10 @@ public class PersonCommunity {
         return re.toJSONString();
     }
 
-    public List<Expert> lpa(String orgname,String name){
-        List<Expert> list = new ArrayList<>();
+    public String lpa(String orgname,String name){
+        //List<Expert> list = new ArrayList<>();
+        List item_list = new ArrayList<>();
+        JSONObject re = new JSONObject();
         try {
             String query0 = "Call algo.labelPropagation('EXPERT','rel',{iterations:3,writeProperty:'partition',write:true,direction:'both'})";
             neo4jUtil.excuteCypherSql(query0);
@@ -66,19 +66,22 @@ public class PersonCommunity {
             String query1 = String.format("MATCH (N:EXPERT) WHERE N.partition=%d AND N.name<>'%s' RETURN N.orgnizationname as orgname,N.name as name",m,name);
             StatementResult result1 = neo4jUtil.excuteCypherSql(query1);
             while(result1.hasNext()){
-                Expert expert = new Expert();
+                JSONObject item = new JSONObject();
                 Record record = result1.next();
                 String othername = record.get("name").toString();
                 String otherorgname = record.get("orgname").toString();
-                System.out.println(othername);
-                System.out.println(otherorgname);
+                item.put("name",name);
+                item.put("orgnizationname",otherorgname);
+                item_list.add(item);
+                /*Expert expert = new Expert();
                 expert.setName(othername);
                 expert.setOrgnizationname(otherorgname);
-                list.add(expert);
+                list.add(expert);*/
             }
+            re.put("expert_list",item_list);
         }catch (Exception e){
 
         }
-        return list;
+        return re.toJSONString();
     }
 }

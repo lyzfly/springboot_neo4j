@@ -29,9 +29,9 @@
                 if(itemvalue.options[i].selected){
                     str = itemvalue.options[i].value;
                     if(str=="Louvain"){
-                        url="LouvainCommunity";
+                        url="http://localhost:8080/neo4jdemo/LouvainCommunity";
                     }else if(str=="LPA"){
-                        url="LPACommunity";
+                        url="http://localhost:8080/neo4jdemo/LPACommunity";
                     }
                 }
             }
@@ -47,7 +47,7 @@
                 success:function (data) {
                     var jsonObj = JSON.parse( data );
                     var list = jsonObj.expert_list;
-                    if(data.length==0){
+                    if(list.length==0){
                         alert("节点不存在！")
                     }
                     var str="<table>"+"<tr><th>专家姓名</th><th>专家单位</th></tr>";

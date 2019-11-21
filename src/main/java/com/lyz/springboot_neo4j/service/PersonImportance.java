@@ -33,43 +33,44 @@ public class PersonImportance {
     public String DegreeMostImportant(String orgname, int cnt) {
         JSONObject re = new JSONObject();
         List item_list = new ArrayList();
-        List<Expert> list = new ArrayList<>();
+        //List<Expert> list = new ArrayList<>();
         String query;
         query = String.format("CALL algo.degree.stream(\"EXPERT\",\"In\",{direction:\"both\"})\n" +
                 "YIELD nodeId,score\n" +"WHERE algo.asNode(nodeId).orgnizationname='%s'"+
                 "RETURN algo.asNode(nodeId).name AS name," +"algo.asNode(nodeId).orgnizationid AS orgid,"+
-                "algo.asNode(nodeId).orgnizationname as orgname,score AS followers\n" +
-                "ORDER BY followers DESC",orgname);
+                "algo.asNode(nodeId).orgnizationname as orgname,score AS importance\n" +
+                "ORDER BY importance DESC",orgname);
         StatementResult result = neo4jUtil.excuteCypherSql(query);
         double before = Double.MIN_VALUE;
         int count = 0;
         while (result.hasNext()&&count<cnt) {
             JSONObject reitem = new JSONObject();
             Record record = result.next();
-            Expert expert = new Expert();
             String name = record.get("name").toString();
             String id = record.get("orgid").toString();
-            Double followers = Double.valueOf(record.get("followers").toString());
+            Double importance = Double.valueOf(record.get("importance").toString());
+          /*  Expert expert = new Expert();
             expert.setName(name);
             expert.setOrgnizationname(orgname);
             expert.setImportance(followers);
-            expert.setOrgnizationid(id);
+            expert.setOrgnizationid(id);*/
             reitem.put("name",name);
-            reitem.put("followers",followers);
-            if (followers != before) {
+            reitem.put("importance",importance);
+            if (importance != before) {
                 count++;
-                System.out.println("count"+count);
             }
-            before = followers;
+            before = importance;
             item_list.add(reitem.toJSONString());
-            list.add(expert);
+            //list.add(expert);
         }
         re.put("expert_list",item_list);
         return re.toJSONString();
     }
 
-    public List<Expert> PageRankMostImportant(String orgname,int cnt){
-        List<Expert> list = new ArrayList<>();
+    public String PageRankMostImportant(String orgname,int cnt){
+        JSONObject re = new JSONObject();
+        List item_list = new ArrayList();
+        //List<Expert> list = new ArrayList<>();
         String query;
         query = String.format("CALL algo.pageRank.stream('EXPERT', 'rel', " +
                 "{iterations:20, dampingFactor:0.85})\n" +
@@ -80,23 +81,27 @@ public class PersonImportance {
         int count=0;
         double before = Double.MIN_VALUE;
         while(result.hasNext()&&count<cnt){
+            JSONObject reitem = new JSONObject();
             Record record = result.next();
-            Expert expert = new Expert();
+
             String name = record.get("name").toString();
             Double importance = Double.valueOf(record.get("score").toString());
             DecimalFormat df = new DecimalFormat("#.00");
             importance = Double.valueOf(df.format(importance));
-            System.out.println(name);
-            System.out.println(importance);
+            /*Expert expert = new Expert();
             expert.setName(name);
             expert.setImportance(importance);
-            list.add(expert);
+            list.add(expert);*/
+            reitem.put("name",name);
+            reitem.put("importance",importance);
             if(importance!=before){
                 count++;
             }
             before = importance;
+            item_list.add(reitem.toJSONString());
         }
-        return list;
+        re.put("expert_list",item_list);
+        return re.toJSONString();
     }
 
     public List<Expert> Betweenness(String orgname,int cnt){
