@@ -35,19 +35,23 @@
                 datatype:"json",
                 async:"false",
                 success:function (data) {
-                    var jsonObj = JSON.parse( data );
-                    var list = jsonObj.expert_list;
-                    if(list.length==0){
-                        alert("节点不存在！")
+                    if(data=="起始节点不存在,终止节点不存在"){
+                        alert(data);
+                    }else if(data=="起始节点不存在"){
+                        alert(data);
+                    }else if(data=="终止节点不存在"){
+                        alert(data);
+                    }else{
+                        var jsonObj = JSON.parse( data );
+                        var list = jsonObj.expert_list;
+                        var str="<table>"+"<tr><th>专家姓名</th><th>专家单位</th></tr>";
+                        for(i in list){
+                            str+="<tr>"+"<td>"+list[i].name+"</td>"+"<td>"+list[i].orgnizationname+"</td>"+"</tr>";
+                        }
+                        str+="</table>"
+                        document.getElementById("path").innerHTML=str;
                     }
-                    var str="<table>"+"<tr><th>专家姓名</th><th>专家单位</th></tr>";
-                    for(i in list){
-                        str+="<tr>"+"<td>"+list[i].name+"</td>"+"<td>"+list[i].orgnizationname+"</td>"+"</tr>";
-                    }
-                    str+="</table>"
-                    document.getElementById("path").innerHTML=str;
                 }
-
             })
         }
     </script>    

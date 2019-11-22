@@ -66,8 +66,9 @@ public class PickUploadController {
     @ResponseBody
     @RequestMapping(value = "/delete_node",method = RequestMethod.POST)
     public void delete_node(HttpServletRequest request){
-        String nodeid = request.getParameter("node");
-        upLoadFile.delete_node(nodeid);
+        String expert_arrstring = request.getParameter("node");
+        String[]  arr = expert_arrstring.split(",");
+        upLoadFile.delete_node(arr);
     }
 
     @ResponseBody

@@ -53,10 +53,9 @@
                     }
                     var str="<table>"+"<tr><th>专家姓名</th><th>中心度</th></tr>";
                     for (i in list) {
-                        var item = JSON.parse(list[i])
                         str += "<tr>" +
-                            "<td>" + item.name + "</td>" +
-                            "<td>" + item.importance + "</td>" +
+                            "<td>" + list[i].name + "</td>" +
+                            "<td>" + list[i].importance + "</td>" +
                         "</tr>";
                     }
                     str +="</table>";

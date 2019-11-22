@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lyz.springboot_neo4j.entity.Expert;
 import com.lyz.springboot_neo4j.util.Neo4jUtil;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +41,8 @@ public class PersonSimilarity {
             Expert expert = new Expert();
             Record record = result.next();
             JSONObject reitem = new JSONObject();
-            String similarnode_name = record.get("to").toString();
-            String similarnode_org = record.get("orgname").toString();
+            String similarnode_name = record.get("to").toString().replace("\"","");
+            String similarnode_org = record.get("orgname").toString().replace("\"","");
             DecimalFormat df = new DecimalFormat("#.##");
             String similarity = df.format(Double.valueOf(record.get("similarity").toString()));
             reitem.put("similarnodename",similarnode_name);
@@ -53,11 +54,12 @@ public class PersonSimilarity {
             expert.setSimilarity(df.format(Double.valueOf(record.get("similarity").toString())));
             list.add(expert);*/
             re.put("expert_list",item_list);
+            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+            return tmp;
         }catch (Exception e){
             logger.info("节点不存在！");
-            System.out.println("节点不存在！");
+            return "false";
         }
-        return re.toJSONString();
     }
 
     public String DegreeSim(String name,String orgname){
@@ -65,7 +67,9 @@ public class PersonSimilarity {
         List item_list = new ArrayList();
         List<Expert> list = new ArrayList<>();
         List<Expert> list1 = new ArrayList<>();
-        try {
+        String query0 = String.format("match (n:EXPERT{name:'%s',orgnizationname:'%s'}) Return n",name,orgname);
+        StatementResult result0 = neo4jUtil.excuteCypherSql(query0);
+        if(result0.hasNext()){
             String query1 = String.format("match (n:EXPERT{name:'%s',orgnizationname:'%s'})"+
                     "-[r:rel]-(target) match (m)-[:rel]-(target) return m.name as name," +
                     "m.orgnizationname as orgname,m.id as id",name,orgname);
@@ -125,8 +129,8 @@ public class PersonSimilarity {
                 }
                 if(queue.isEmpty()||queue.peek()==item.getValue()){
                     DecimalFormat df = new DecimalFormat("#.00");
-                    String similarnode_name = item.getKey().getName();
-                    String similarnode_org = item.getKey().getOrgnizationname();
+                    String similarnode_name = item.getKey().getName().replace("\"","");
+                    String similarnode_org = item.getKey().getOrgnizationname().replace("\"","");
                     String similarity = df.format(item.getValue());
                     reitem.put("similarnodename",similarnode_name);
                     reitem.put("similarnodeorg",similarnode_org);
@@ -143,9 +147,10 @@ public class PersonSimilarity {
                 item_list.add(reitem);
             }
             re.put("expert_list",item_list);
-        }catch (Exception e){
-            logger.info("节点不存在！");
+            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+            return tmp;
+        }else{
+            return "false";
         }
-        return re.toJSONString();
     }
 }

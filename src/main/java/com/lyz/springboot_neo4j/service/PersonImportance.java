@@ -11,12 +11,11 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 
 @Service
 public class PersonImportance {
-    @Autowired
-    Driver driver;
     @Autowired
     Neo4jUtil neo4jUtil;
     public String findOnePersonImportance(String name,String orgnizationname){
@@ -46,7 +45,8 @@ public class PersonImportance {
         while (result.hasNext()&&count<cnt) {
             JSONObject reitem = new JSONObject();
             Record record = result.next();
-            String name = record.get("name").toString();
+            String name = record.get("name").toString().replace("\"","");
+
             String id = record.get("orgid").toString();
             Double importance = Double.valueOf(record.get("importance").toString());
           /*  Expert expert = new Expert();
@@ -60,11 +60,12 @@ public class PersonImportance {
                 count++;
             }
             before = importance;
-            item_list.add(reitem.toJSONString());
+            item_list.add(reitem);
             //list.add(expert);
         }
         re.put("expert_list",item_list);
-        return re.toJSONString();
+        String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+        return tmp;
     }
 
     public String PageRankMostImportant(String orgname,int cnt){
@@ -98,10 +99,11 @@ public class PersonImportance {
                 count++;
             }
             before = importance;
-            item_list.add(reitem.toJSONString());
+            item_list.add(reitem);
         }
         re.put("expert_list",item_list);
-        return re.toJSONString();
+        String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+        return tmp;
     }
 
     public List<Expert> Betweenness(String orgname,int cnt){

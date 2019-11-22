@@ -46,17 +46,19 @@
                 datatype: "json",
                 async:"false",
                 success:function (data) {
-                    var jsonObj = JSON.parse( data );
-                    var list = jsonObj.expert_list;
-                    if(list.length==0){
-                        alert("该节点不存在!")
+                    if(data=="false"){
+                        alert("节点不存在");
+                    }else{
+                        var jsonObj = JSON.parse( data );
+                        var list = jsonObj.expert_list;
+
+                        var str="<table>"+"<tr><th>专家姓名</th><th>专家单位</th><th>相似度</th></tr>";
+                        for(i in list){
+                            str+="<tr>"+"<td>"+list[i].similarnodename+"</td>"+"<td>"+list[i].similarnodeorg+"</td>"+"<td>"+list[i].similarity+"</td>"+"</tr>";
+                        }
+                        str+="</table>"
+                        document.getElementById("similar").innerHTML=str;
                     }
-                    var str="<table>"+"<tr><th>专家姓名</th><th>专家单位</th><th>相似度</th></tr>";
-                    for(i in list){
-                        str+="<tr>"+"<td>"+list[i].similarnodename+"</td>"+"<td>"+list[i].similarnodeorg+"</td>"+"<td>"+list[i].similarity+"</td>"+"</tr>";
-                    }
-                    str+="</table>"
-                    document.getElementById("similar").innerHTML=str;
                 }
             })
         }

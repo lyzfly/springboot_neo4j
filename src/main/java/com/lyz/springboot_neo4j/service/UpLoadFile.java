@@ -42,13 +42,14 @@ public class UpLoadFile {
         }
     }
 
-    public void delete_node(String nodeid){
-        String cypher = String.format("MATCH (a:EXPERT{id:'%s'}) DETACH DELETE a",nodeid);
-        System.out.println(cypher);
-        try(Session session = driver.session()){
-            try(Transaction tx = session.beginTransaction()){
-                tx.run(cypher);
-                tx.success();
+    public void delete_node(String[] expert_arr) {
+        for (String expert : expert_arr) {
+            String cypher = String.format("MATCH (a:EXPERT{id:'%s'}) DETACH DELETE a", expert);
+            try (Session session = driver.session()) {
+                try (Transaction tx = session.beginTransaction()) {
+                    tx.run(cypher);
+                    tx.success();
+                }
             }
         }
     }
