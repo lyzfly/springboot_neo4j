@@ -1,6 +1,7 @@
 package com.lyz.springboot_neo4j.contollers;
 
 import com.lyz.springboot_neo4j.service.UpLoadFile;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import java.io.IOException;
 @Controller
 public class PickUploadController {
 
-
+    private  static Logger logger = Logger.getLogger(PickUploadController.class);
     @RequestMapping(value = "/upload")
     public String upload(){
         return "upload";
@@ -27,8 +28,8 @@ public class PickUploadController {
     public String uploadNode(@RequestParam( value = "nodefile") MultipartFile file) {
         String filename = file.getOriginalFilename();
         String projectpath = System.getProperty("user.dir");
-        String path = projectpath+"/src/main/resources/"+filename;
-        System.out.println(path);
+        //String path = "/var/lib/neo4j/import/"+filename;
+        String path = "/bigdata/neo4j/neo4j-community-3.5.7/import/"+filename;
         File dest_rel = new File(path);
         try {
             file.transferTo(dest_rel);
@@ -38,16 +39,19 @@ public class PickUploadController {
             return "添加成功！";
         } catch (IOException e) {
             e.printStackTrace();
+            return "添加失败！";
         }
-        return "添加失败！";
     }
 
     @ResponseBody
     @RequestMapping(value = "/upload_relfile",method = RequestMethod.POST)
     public String uploadFile1(@RequestParam( value = "relfile") MultipartFile file){
         String filename = file.getOriginalFilename();
-        String projectpath = System.getProperty("user.dir");
-        String path = projectpath+"/src/main/resources/"+filename;
+        //String projectpath = System.getProperty("user.dir");
+
+       // String projectpath = "/var/lib/neo4j/import/";
+        String projectpath = "/bigdata/neo4j/neo4j-community-3.5.7/import/";
+        String path = projectpath+filename;
         File dest_rel = new File(path);
         System.out.println(dest_rel.getPath());
         try {
@@ -59,25 +63,25 @@ public class PickUploadController {
             return "添加成功！";
         } catch (IOException e) {
             e.printStackTrace();
+            return "添加失败！";
         }
-        return "添加失败！";
     }
 
     @ResponseBody
     @RequestMapping(value = "/delete_node",method = RequestMethod.POST)
-    public void delete_node(HttpServletRequest request){
+    public String delete_node(HttpServletRequest request){
         String expert_arrstring = request.getParameter("node");
         String[]  arr = expert_arrstring.split(",");
-        upLoadFile.delete_node(arr);
+        return upLoadFile.delete_node(arr);
     }
 
     @ResponseBody
     @RequestMapping(value = "/delete_edge",method = RequestMethod.POST)
-    public void delete_edge(HttpServletRequest request){
+    public String delete_edge(HttpServletRequest request){
         String edge = request.getParameter("edge");
         String startnodeid = edge.split("-")[0];
         String endnodeid = edge.split("-")[1];
-        upLoadFile.delete_edge(startnodeid,endnodeid);
+        return upLoadFile.delete_edge(startnodeid,endnodeid);
     }
 
 }

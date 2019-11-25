@@ -42,7 +42,7 @@
                     alert(data);
                 },
                 error:function () {
-                    alert("错误");
+                    alert("错误!");
                 }
             });
         }
@@ -55,11 +55,9 @@
                 data:{
                     node:node
                 },
-                datatype:"json",
                 async:false,
-                success:function () {
-                    if(data)
-                    alert("删除成功!")
+                success:function (data) {
+                    alert(data)
                 }
             });
         }
@@ -72,10 +70,9 @@
                 data:{
                     edge:edge
                 },
-                datatype:"json",
                 async:false,
-                success:function () {
-                    alert("删除成功!")
+                success:function (data) {
+                    alert(data)
                 }
             });
         }

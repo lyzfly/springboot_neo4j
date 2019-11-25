@@ -17,11 +17,12 @@ public class PersonCommunity {
     @Autowired
     Neo4jUtil neo4jUtil;
     public String louvain(String orgname,String name){
+
         //List<Expert> list = new ArrayList<>();
         JSONObject re = new JSONObject();
         List item_list = new ArrayList();
         String query0 = "CALL algo.louvain('EXPERT','rel',{write:true,writeproperty:'community'})" +
-                " YIELD nodes,communityCount,iterations,loadMillis,computeMillis,writeMillis";
+                "YIELD nodes,communityCount,iterations,loadMillis,computeMillis,writeMillis";
         neo4jUtil.excuteCypherSql(query0);
         String query = String.format("MATCH (N:EXPERT) WHERE N.orgnizationname='%s' AND N.name='%s' Return N.community as community" ,orgname,name);
         StatementResult result = neo4jUtil.excuteCypherSql(query);

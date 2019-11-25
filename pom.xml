@@ -107,37 +107,23 @@
 
     <build>
         <plugins>
-
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.lyz.springboot_neo4j.SpringbootNeo4jApplication</mainClass>
-                        </manifest>
-                    </archive>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <executable>true</executable>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
-                        <phase>package</phase> <!-- bind to the packaging phase -->
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
-            </plugin>
-
         </plugins>
 
+        <resources>
+        <resource>
+            <directory>lib</directory>
+            <targetPath>BOOT-INF/lib/</targetPath>
+            <includes>
+                <include>**/*.jar</include>
+            </includes>
+        </resource>
+        </resources>
     </build>
 </project>

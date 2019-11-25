@@ -3,19 +3,17 @@ package com.lyz.springboot_neo4j.service;
 import com.lyz.springboot_neo4j.util.Neo4jUtil;
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.Session;
+import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
 @Service
 public class UpLoadFile {
     @Autowired
     Driver driver;
+    @Autowired
+    Neo4jUtil neo4jUtil;
 
     public void loadcsvToNeo4j_node(String nodefile){
         //String nodefile = "file:///"+ nodefilename;
@@ -42,27 +40,42 @@ public class UpLoadFile {
         }
     }
 
-    public void delete_node(String[] expert_arr) {
+    public String delete_node(String[] expert_arr) {
+        boolean flag = true;
+        String false_line = "删除失败，不存在节点";
         for (String expert : expert_arr) {
-            String cypher = String.format("MATCH (a:EXPERT{id:'%s'}) DETACH DELETE a", expert);
-            try (Session session = driver.session()) {
-                try (Transaction tx = session.beginTransaction()) {
-                    tx.run(cypher);
-                    tx.success();
-                }
+            String cypher0 = String.format("match(n:EXPERT{id:'%s'}) return n", expert);
+            StatementResult result0 = neo4jUtil.excuteCypherSql(cypher0);
+            String cypher = String.format("match(n:EXPERT{id:'%s'}) detach delete n", expert);
+            StatementResult result = neo4jUtil.excuteCypherSql(cypher);
+            if(!result0.hasNext()){
+                flag = false;
             }
+            false_line  = false_line + expert + " ";
+        }
+        if(!flag){
+            return false_line;
+        }else{
+            return "删除成功！";
         }
     }
 
-    public void delete_edge(String startnodeid,String endnodeid){
+    public String delete_edge(String startnodeid,String endnodeid){
 
+        String cypher0 = String.format("MATCH (a:EXPERT{id:'%s'})-[r:rel]-(b:EXPERT{id:'%s'}) RETURN r",startnodeid,endnodeid);
+        StatementResult result = neo4jUtil.excuteCypherSql(cypher0);
+        if(!result.hasNext()){
+            return "删除边失败！";
+        }
         String cypher = String.format("MATCH (a:EXPERT{id:'%s'})-[r:rel]-(b:EXPERT{id:'%s'}) DELETE r",startnodeid,endnodeid);
+        System.out.println(cypher);
         try(Session session = driver.session()){
             try(Transaction tx = session.beginTransaction()){
                 tx.run(cypher);
                 tx.success();
             }
         }
+        return "删除成功！";
     }
 }
 
