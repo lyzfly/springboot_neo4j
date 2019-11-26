@@ -1,5 +1,6 @@
 package com.lyz.springboot_neo4j.contollers;
 
+import com.lyz.springboot_neo4j.config.Cal;
 import com.lyz.springboot_neo4j.service.UpLoadFile;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +29,15 @@ public class PickUploadController {
     public String uploadNode(@RequestParam( value = "nodefile") MultipartFile file) {
         String filename = file.getOriginalFilename();
         String projectpath = System.getProperty("user.dir");
-        //String path = "/var/lib/neo4j/import/"+filename;
-        String path = "/bigdata/neo4j/neo4j-community-3.5.7/import/"+filename;
+        String path = "/var/lib/neo4j/import/"+filename;
+        //String path = "/bigdata/neo4j/neo4j-community-3.5.7/import/"+filename;
         File dest_rel = new File(path);
         try {
             file.transferTo(dest_rel);
             String filepath = "file:///" + path;
             filepath = filepath.replace("\\", "/");
             upLoadFile.loadcsvToNeo4j_node(filepath);
+            new Cal().calculate();
             return "添加成功！";
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,8 +51,8 @@ public class PickUploadController {
         String filename = file.getOriginalFilename();
         //String projectpath = System.getProperty("user.dir");
 
-       // String projectpath = "/var/lib/neo4j/import/";
-        String projectpath = "/bigdata/neo4j/neo4j-community-3.5.7/import/";
+        String projectpath = "/var/lib/neo4j/import/";
+        //String projectpath = "/bigdata/neo4j/neo4j-community-3.5.7/import/";
         String path = projectpath+filename;
         File dest_rel = new File(path);
         System.out.println(dest_rel.getPath());
@@ -60,6 +62,7 @@ public class PickUploadController {
             filepath = filepath.replace("\\", "/");
             System.out.println(filepath);
             upLoadFile.loadcsvToNeo4j_rel(filepath);
+            new Cal().calculate();
             return "添加成功！";
         } catch (IOException e) {
             e.printStackTrace();
@@ -72,6 +75,7 @@ public class PickUploadController {
     public String delete_node(HttpServletRequest request){
         String expert_arrstring = request.getParameter("node");
         String[]  arr = expert_arrstring.split(",");
+        new Cal().calculate();
         return upLoadFile.delete_node(arr);
     }
 
@@ -81,6 +85,7 @@ public class PickUploadController {
         String edge = request.getParameter("edge");
         String startnodeid = edge.split("-")[0];
         String endnodeid = edge.split("-")[1];
+        new Cal().calculate();
         return upLoadFile.delete_edge(startnodeid,endnodeid);
     }
 

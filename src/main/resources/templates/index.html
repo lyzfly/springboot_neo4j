@@ -65,7 +65,7 @@
         function　deleteedge(){
             var edge = document.getElementById("edge").value;
             $.ajax({
-                url:'http://localhost:8080/neo4jdemo/delete_edge',
+                url:'/neo4jdemo/delete_edge',
                 type:"POST",
                 data:{
                     edge:edge
