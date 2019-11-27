@@ -1,7 +1,7 @@
 package com.lyz.springboot_neo4j.contollers;
 
-import com.lyz.springboot_neo4j.config.Cal;
 import com.lyz.springboot_neo4j.service.UpLoadFile;
+import com.lyz.springboot_neo4j.util.Neo4jUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +24,8 @@ public class PickUploadController {
 
     @Autowired
     UpLoadFile upLoadFile;
+    @Autowired
+    Neo4jUtil neo4jUtil;
     @ResponseBody
     @RequestMapping(value = "/upload_nodefile",method = RequestMethod.POST)
     public String uploadNode(@RequestParam( value = "nodefile") MultipartFile file) {
@@ -37,7 +39,14 @@ public class PickUploadController {
             String filepath = "file:///" + path;
             filepath = filepath.replace("\\", "/");
             upLoadFile.loadcsvToNeo4j_node(filepath);
-            new Cal().calculate();
+
+            String query0 = "CALL algo.louvain('EXPERT','rel',{write:true,writeproperty:'community'})" +
+                    "YIELD nodes,communityCount,iterations,loadMillis,computeMillis,writeMillis";
+            neo4jUtil.excuteCypherSql(query0);
+
+            String query1 = "Call algo.labelPropagation('EXPERT','rel',{iterations:3,writeProperty:'partition',write:true,direction:'both'})";
+            neo4jUtil.excuteCypherSql(query1);
+
             return "添加成功！";
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,7 +71,12 @@ public class PickUploadController {
             filepath = filepath.replace("\\", "/");
             System.out.println(filepath);
             upLoadFile.loadcsvToNeo4j_rel(filepath);
-            new Cal().calculate();
+            String query0 = "CALL algo.louvain('EXPERT','rel',{write:true,writeproperty:'community'})" +
+                    "YIELD nodes,communityCount,iterations,loadMillis,computeMillis,writeMillis";
+            neo4jUtil.excuteCypherSql(query0);
+
+            String query1 = "Call algo.labelPropagation('EXPERT','rel',{iterations:3,writeProperty:'partition',write:true,direction:'both'})";
+            neo4jUtil.excuteCypherSql(query1);
             return "添加成功！";
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,7 +89,12 @@ public class PickUploadController {
     public String delete_node(HttpServletRequest request){
         String expert_arrstring = request.getParameter("node");
         String[]  arr = expert_arrstring.split(",");
-        new Cal().calculate();
+        String query0 = "CALL algo.louvain('EXPERT','rel',{write:true,writeproperty:'community'})" +
+                "YIELD nodes,communityCount,iterations,loadMillis,computeMillis,writeMillis";
+        neo4jUtil.excuteCypherSql(query0);
+
+        String query1 = "Call algo.labelPropagation('EXPERT','rel',{iterations:3,writeProperty:'partition',write:true,direction:'both'})";
+        neo4jUtil.excuteCypherSql(query1);
         return upLoadFile.delete_node(arr);
     }
 
@@ -85,7 +104,12 @@ public class PickUploadController {
         String edge = request.getParameter("edge");
         String startnodeid = edge.split("-")[0];
         String endnodeid = edge.split("-")[1];
-        new Cal().calculate();
+        String query0 = "CALL algo.louvain('EXPERT','rel',{write:true,writeproperty:'community'})" +
+                "YIELD nodes,communityCount,iterations,loadMillis,computeMillis,writeMillis";
+        neo4jUtil.excuteCypherSql(query0);
+
+        String query1 = "Call algo.labelPropagation('EXPERT','rel',{iterations:3,writeProperty:'partition',write:true,direction:'both'})";
+        neo4jUtil.excuteCypherSql(query1);
         return upLoadFile.delete_edge(startnodeid,endnodeid);
     }
 

@@ -30,7 +30,7 @@
                 if(itemvalue.options[i].selected){
                     str = itemvalue.options[i].value;
                     if(str=="Degree"){
-                        url="http://localhost:8080/neo4jdemo/DegreeMostImportance";
+                        url="/neo4jdemo/DegreeMostImportance";
                     }else if(str=="PageRank"){
                         url="/neo4jdemo/PageRankMostImportance";
                     }
@@ -48,9 +48,6 @@
                 success:function (data) {
                     var jsonObj = JSON.parse( data );
                     var list = jsonObj.expert_list;
-                    if(list.length==0){
-                        alert("节点不存在！");
-                    }
                     var str="<table>"+"<tr><th>专家姓名</th><th>中心度</th></tr>";
                     for (i in list) {
                         str += "<tr>" +

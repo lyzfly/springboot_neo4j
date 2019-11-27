@@ -9,7 +9,7 @@
         function doupload() {
             var formdata = new FormData($("#upload")[0]);
             $.ajax({
-                url:'http://localhost:8080/neo4jdemo/upload_nodefile',
+                url:'/neo4jdemo/upload_nodefile',
                 type:"POST",
                 data: formdata,
                 enctype: 'multipart/form-data',
@@ -30,7 +30,7 @@
         function doupload1() {
             var formdata = new FormData($("#upload1")[0]);
             $.ajax({
-                url:'http://localhost:8080/neo4jdemo/upload_relfile',
+                url:'/neo4jdemo/upload_relfile',
                 type:"POST",
                 data: formdata,
                 enctype: 'multipart/form-data',
@@ -50,7 +50,7 @@
         function　deletenode(){
             var node = document.getElementById("node").value;
             $.ajax({
-                url:'http://localhost:8080/neo4jdemo/delete_node',
+                url:'/neo4jdemo/delete_node',
                 type:"POST",
                 data:{
                     node:node

@@ -85,8 +85,9 @@ public class PersonImportance {
             JSONObject reitem = new JSONObject();
             Record record = result.next();
 
-            String name = record.get("name").toString();
-            Double importance = Double.valueOf(record.get("score").toString());
+            String name = record.get("name").toString().replace("\"","");
+
+            double importance = Double.valueOf(record.get("score").toString());
             DecimalFormat df = new DecimalFormat("#.00");
             importance = Double.valueOf(df.format(importance));
             /*Expert expert = new Expert();
