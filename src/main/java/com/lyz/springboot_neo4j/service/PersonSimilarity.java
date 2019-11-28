@@ -42,22 +42,24 @@ public class PersonSimilarity {
             System.out.println(query);
             StatementResult result = neo4jUtil.excuteCypherSql(query);
             Expert expert = new Expert();
-            Record record = result.next();
-            JSONObject reitem = new JSONObject();
-            String similarnode_name = record.get("to").toString().replace("\"", "");
-            String similarnode_org = record.get("orgname").toString().replace("\"", "");
-            DecimalFormat df = new DecimalFormat("#.##");
-            String similarity = df.format(Double.valueOf(record.get("similarity").toString()));
-            reitem.put("similarnodename", similarnode_name);
-            reitem.put("similarnodeorg", similarnode_org);
-            reitem.put("similarity", similarity);
-            item_list.add(reitem);
-          /*  expert.setSimilarnodename(similarnode_name);
-            expert.setSimilarnodeorg(similarnode_org);
-            expert.setSimilarity(df.format(Double.valueOf(record.get("similarity").toString())));
-            list.add(expert);*/
+            if(result.hasNext()) {
+                Record record = result.next();
+                JSONObject reitem = new JSONObject();
+                String similarnode_name = record.get("to").toString().replace("\"", "");
+                String similarnode_org = record.get("orgname").toString().replace("\"", "");
+                DecimalFormat df = new DecimalFormat("#.##");
+                String similarity = df.format(Double.valueOf(record.get("similarity").toString()));
+                reitem.put("similarnodename", similarnode_name);
+                reitem.put("similarnodeorg", similarnode_org);
+                reitem.put("similarity", similarity);
+                item_list.add(reitem);
+              /*  expert.setSimilarnodename(similarnode_name);
+                expert.setSimilarnodeorg(similarnode_org);
+                expert.setSimilarity(df.format(Double.valueOf(record.get("similarity").toString())));
+                list.add(expert);*/
+            }
+            re.put("status", "success");
             re.put("expert_list", item_list);
-            re.put("status","success");
         }else{
             re.put("status","fail");
         }
