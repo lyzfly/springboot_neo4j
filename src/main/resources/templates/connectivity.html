@@ -35,14 +35,16 @@
                 datatype:"json",
                 async:"false",
                 success:function (data) {
-                    if(data=="起始节点不存在,终止节点不存在"){
-                        alert(data);
-                    }else if(data=="起始节点不存在"){
-                        alert(data);
-                    }else if(data=="终止节点不存在"){
-                        alert(data);
+                    var jsonObj = JSON.parse( data );
+                    var msg = jsonObj.msg;
+                    if(msg=="起始节点不存在,终止节点不存在"){
+                        alert(msg);
+                    }else if(msg=="起始节点不存在"){
+                        alert(msg);
+                    }else if(msg=="终止节点不存在"){
+                        alert(msg);
                     }else{
-                        var jsonObj = JSON.parse( data );
+
                         var list = jsonObj.expert_list;
                         var str="<table>"+"<tr><th>专家姓名</th><th>专家单位</th></tr>";
                         for(i in list){

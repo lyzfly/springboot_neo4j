@@ -45,11 +45,14 @@ public class PersonCommunity {
                 item_list.add(item);
                 //list.add(expert);
             }
+            re.put("status","success");
             re.put("expert_list", item_list);
             String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
             return tmp;
         }else{
-            return "false";
+            re.put("status","fail");
+            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+            return tmp;
         }
     }
 
@@ -77,11 +80,14 @@ public class PersonCommunity {
                 expert.setOrgnizationname(otherorgname);
                 list.add(expert);*/
             }
+            re.put("status","success");
             re.put("expert_list", item_list);
             String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
             return tmp;
         }else{
-            return "false";
+            re.put("status","fail");
+            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+            return tmp;
         }
     }
 }

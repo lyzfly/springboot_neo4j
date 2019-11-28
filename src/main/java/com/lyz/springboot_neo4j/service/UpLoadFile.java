@@ -31,7 +31,6 @@ public class UpLoadFile {
     public void loadcsvToNeo4j_rel(String relfile){
         String load_rel = String.format("LOAD CSV WITH HEADERS FROM '%s' AS line MATCH(from:EXPERT{id:line.fromid})," +
                 "(to:EXPERT{id:line.toid}) MERGE(from)-[r:rel{relation:line.relation}]->(to)",relfile);
-        System.out.println(load_rel);
         try(Session session = driver.session()){
             try(Transaction tx = session.beginTransaction()){
                 tx.run(load_rel);

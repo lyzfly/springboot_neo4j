@@ -1,9 +1,11 @@
 package com.lyz.springboot_neo4j.contollers;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lyz.springboot_neo4j.service.UpLoadFile;
 import com.lyz.springboot_neo4j.util.Neo4jUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,7 +30,8 @@ public class PickUploadController {
     Neo4jUtil neo4jUtil;
     @ResponseBody
     @RequestMapping(value = "/upload_nodefile",method = RequestMethod.POST)
-    public String uploadNode(@RequestParam( value = "nodefile") MultipartFile file) {
+    public String uploadNode(@RequestParam( value = "nodefile") MultipartFile file, HttpServletRequest request) {
+        JSONObject re = new JSONObject();
         String filename = file.getOriginalFilename();
         String projectpath = System.getProperty("user.dir");
         String path = "/var/lib/neo4j/import/"+filename;
@@ -49,13 +52,13 @@ public class PickUploadController {
 
             return "添加成功！";
         } catch (IOException e) {
-            e.printStackTrace();
             return "添加失败！";
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/upload_relfile",method = RequestMethod.POST)
+
     public String uploadFile1(@RequestParam( value = "relfile") MultipartFile file){
         String filename = file.getOriginalFilename();
         //String projectpath = System.getProperty("user.dir");

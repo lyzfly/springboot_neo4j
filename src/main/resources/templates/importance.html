@@ -45,18 +45,23 @@
                 },
                 datatype:"json",
                 async: false,
-                success:function (data) {
+                success:function (data){
                     var jsonObj = JSON.parse( data );
-                    var list = jsonObj.expert_list;
-                    var str="<table>"+"<tr><th>专家姓名</th><th>中心度</th></tr>";
-                    for (i in list) {
-                        str += "<tr>" +
-                            "<td>" + list[i].name + "</td>" +
-                            "<td>" + list[i].importance + "</td>" +
-                        "</tr>";
+                    var status = jsonObj.status;
+                    if(status=="fail"){
+                        alert("不存在该专家单位");
+                    }else{
+                        var list = jsonObj.expert_list;
+                        var str="<table>"+"<tr><th>专家姓名</th><th>中心度</th></tr>";
+                        for (i in list) {
+                            str += "<tr>" +
+                                "<td>" + list[i].name + "</td>" +
+                                "<td>" + list[i].importance + "</td>" +
+                            "</tr>";
+                        }
+                        str +="</table>";
+                        document.getElementById("degreetable").innerHTML=str;
                     }
-                    str +="</table>";
-                    document.getElementById("degreetable").innerHTML=str;
                 }
             });
         }

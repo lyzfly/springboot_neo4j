@@ -24,42 +24,45 @@ public class PersonSimilarity {
     @Autowired
     Neo4jUtil neo4jUtil;
 
-    public String  JaccordSim(String name,String orgname){
+    public String  JaccordSim(String name,String orgname) {
         JSONObject re = new JSONObject();
         List item_list = new ArrayList();
-       // List<Expert> list = new ArrayList<>();
-        try {
+        // List<Expert> list = new ArrayList<>();
+        String query0 =  String.format("MATCH(n:EXPERT) where n.orgnizationname='%s' AND n.name='%s' RETURN n",orgname,name);
+        StatementResult result0 = neo4jUtil.excuteCypherSql(query0);
+        if(result0.hasNext()) {
             String query = String.format("MATCH (p1:EXPERT {name: '%s',orgnizationname:'%s'})-[r:rel]-(cuisine1)\n" +
                     "WITH p1, collect(id(cuisine1)) AS p1Cuisine\n" +
-                    "MATCH(p2:EXPERT)-[r:rel]-(cuisine2)　WHERE p1 <> p2\n"+
+                    "MATCH(p2:EXPERT)-[r:rel]-(cuisine2)　WHERE p1 <> p2\n" +
                     "WITH p1, p1Cuisine, p2, collect(id(cuisine2)) AS p2Cuisine\n" +
                     "RETURN p1.name AS from,\n" +
                     "p2.name AS to,\n" + "p2.orgnizationname AS orgname," +
                     "algo.similarity.jaccard(p1Cuisine, p2Cuisine) AS similarity\n" +
-                    "ORDER BY similarity DESC",name,orgname);
+                    "ORDER BY similarity DESC", name, orgname);
+            System.out.println(query);
             StatementResult result = neo4jUtil.excuteCypherSql(query);
             Expert expert = new Expert();
             Record record = result.next();
             JSONObject reitem = new JSONObject();
-            String similarnode_name = record.get("to").toString().replace("\"","");
-            String similarnode_org = record.get("orgname").toString().replace("\"","");
+            String similarnode_name = record.get("to").toString().replace("\"", "");
+            String similarnode_org = record.get("orgname").toString().replace("\"", "");
             DecimalFormat df = new DecimalFormat("#.##");
             String similarity = df.format(Double.valueOf(record.get("similarity").toString()));
-            reitem.put("similarnodename",similarnode_name);
-            reitem.put("similarnodeorg",similarnode_org);
-            reitem.put("similarity",similarity);
+            reitem.put("similarnodename", similarnode_name);
+            reitem.put("similarnodeorg", similarnode_org);
+            reitem.put("similarity", similarity);
             item_list.add(reitem);
           /*  expert.setSimilarnodename(similarnode_name);
             expert.setSimilarnodeorg(similarnode_org);
             expert.setSimilarity(df.format(Double.valueOf(record.get("similarity").toString())));
             list.add(expert);*/
-            re.put("expert_list",item_list);
-            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
-            return tmp;
-        }catch (Exception e){
-            logger.info("节点不存在！");
-            return "false";
+            re.put("expert_list", item_list);
+            re.put("status","success");
+        }else{
+            re.put("status","fail");
         }
+        String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+        return tmp;
     }
 
     public String DegreeSim(String name,String orgname){
@@ -88,19 +91,15 @@ public class PersonSimilarity {
                 }
 
             }
-            System.out.println("listsize"+list1.size());
             HashMap<Expert, Integer> hashMap = new HashMap<Expert, Integer>();
             for(int i=0;i<list1.size();i++) {
                 String expert_name = list1.get(i).getName();
                 String expert_orgname = list1.get(i).getOrgnizationname();
                 String str1 = expert_name.replace("\"", "");
                 String str2 = expert_orgname.replace("\"", "");
-                System.out.println(expert_name);
-                System.out.println(expert_orgname);
                 String query = String.format("match (n:EXPERT{name:'%s',orgnizationname:'%s'})\n" +
                         "--(target)--(m:EXPERT{name:'%s',orgnizationname:'%s'})\n" +
                         " return count(distinct target) as num", name, orgname, str1, str2);
-                System.out.println(query);
                 StatementResult result1 = neo4jUtil.excuteCypherSql(query);
                 int count = Integer.valueOf(result1.next().get("num").toString());
                 hashMap.put(list1.get(i), count);
@@ -118,12 +117,9 @@ public class PersonSimilarity {
                     }
                 }
             });
-            System.out.println(list_Data);
             Queue<Integer> queue = new LinkedList<>();
             for(Map.Entry<Expert,Integer> item : list_Data){
                 JSONObject reitem = new JSONObject();
-                System.out.println("name"+item.getKey().getName());
-                System.out.println("name1"+name);
                 if(item.getKey().getName().replace("\"","").equals(name)){
                     continue;
                 }
@@ -147,10 +143,11 @@ public class PersonSimilarity {
                 item_list.add(reitem);
             }
             re.put("expert_list",item_list);
-            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
-            return tmp;
+            re.put("status","success");
         }else{
-            return "false";
+            re.put("status","fail");
         }
+        String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+        return tmp;
     }
 }

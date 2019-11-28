@@ -49,19 +49,19 @@ public class PersonConnectivity {
                 expert.setOrgnizationname(orgname);
                 list.add(expert);*/
             }
+            re.put("msg","success");
             re.put("expert_list", item_list);
-            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
-            return tmp;
         }
-        if(!result1.hasNext()&&!result2.hasNext()){
-            return "起始节点不存在,终止节点不存在";
+        else if(!result1.hasNext()&&!result2.hasNext()){
+            re.put("msg","起始节点不存在,终止节点不存在");
         }
-        if(!result1.hasNext()){
-            return "起始节点不存在";
+        else if(!result1.hasNext()){
+            re.put("msg","起始节点不存在");
         }
-        if(!result2.hasNext()){
-            return "终止节点不存在";
+        else if(!result2.hasNext()){
+            re.put("msg","终止节点不存在");
         }
-        return null;
+        String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+        return tmp;
     }
 }

@@ -46,12 +46,12 @@
                 datatype: "json",
                 async:"false",
                 success:function (data) {
-                    if(data=="false"){
+                    var jsonObj = JSON.parse( data );
+                    var status = jsonObj.status;
+                    if(status=="fail"){
                         alert("节点不存在");
                     }else{
-                        var jsonObj = JSON.parse( data );
                         var list = jsonObj.expert_list;
-
                         var str="<table>"+"<tr><th>专家姓名</th><th>专家单位</th><th>相似度</th></tr>";
                         for(i in list){
                             str+="<tr>"+"<td>"+list[i].similarnodename+"</td>"+"<td>"+list[i].similarnodeorg+"</td>"+"<td>"+list[i].similarity+"</td>"+"</tr>";
