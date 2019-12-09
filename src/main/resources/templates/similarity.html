@@ -48,7 +48,7 @@
                 success:function (data) {
                     var jsonObj = JSON.parse( data );
                     var status = jsonObj.status;
-                    if(status=="fail"){
+                    if(status=="failed"){
                         alert("节点不存在");
                     }else{
                         var list = jsonObj.expert_list;

@@ -31,48 +31,52 @@ public class PersonImportance {
 
     public String DegreeMostImportant(String orgname, int cnt) {
         JSONObject re = new JSONObject();
-        List item_list = new ArrayList();
-        //List<Expert> list = new ArrayList<>();
-        String query0 =  String.format("MATCH(n:EXPERT) where n.orgnizationname='%s' RETURN n",orgname);
-        StatementResult statementResult = neo4jUtil.excuteCypherSql(query0);
-        if(statementResult.hasNext()) {
-            String query;
-            query = String.format("CALL algo.degree.stream(\"EXPERT\",\"In\",{direction:\"both\"})\n" +
-                    "YIELD nodeId,score\n" + "WHERE algo.asNode(nodeId).orgnizationname='%s'" +
-                    "RETURN algo.asNode(nodeId).name AS name," + "algo.asNode(nodeId).orgnizationid AS orgid," +
-                    "algo.asNode(nodeId).orgnizationname as orgname,score AS importance\n" +
-                    "ORDER BY importance DESC", orgname);
-            StatementResult result = neo4jUtil.excuteCypherSql(query);
-            double before = Double.MIN_VALUE;
-            int count = 0;
-            while (result.hasNext() && count < cnt) {
-                JSONObject reitem = new JSONObject();
-                Record record = result.next();
-                String name = record.get("name").toString().replace("\"", "");
+        try {
 
-                String id = record.get("orgid").toString();
-                Double importance = Double.valueOf(record.get("importance").toString());
-              /*  Expert expert = new Expert();
-                expert.setName(name);
-                expert.setOrgnizationname(orgname);
-                expert.setImportance(followers);
-                expert.setOrgnizationid(id);*/
-                reitem.put("name", name);
-                reitem.put("importance", importance);
-                if (importance != before) {
-                    count++;
+            List item_list = new ArrayList();
+            //List<Expert> list = new ArrayList<>();
+            String query0 = String.format("MATCH(n:EXPERT) where n.orgnizationname='%s' RETURN n", orgname);
+            StatementResult statementResult = neo4jUtil.excuteCypherSql(query0);
+            if (statementResult.hasNext()) {
+                String query;
+                query = String.format("CALL algo.degree.stream(\"EXPERT\",\"In\",{direction:\"both\"})\n" +
+                        "YIELD nodeId,score\n" + "WHERE algo.asNode(nodeId).orgnizationname='%s'" +
+                        "RETURN algo.asNode(nodeId).name AS name," + "algo.asNode(nodeId).orgnizationid AS orgid," +
+                        "algo.asNode(nodeId).orgnizationname as orgname,score AS importance\n" +
+                        "ORDER BY importance DESC", orgname);
+                StatementResult result = neo4jUtil.excuteCypherSql(query);
+                double before = Double.MIN_VALUE;
+                int count = 0;
+                while (result.hasNext() && count < cnt) {
+                    JSONObject reitem = new JSONObject();
+                    Record record = result.next();
+                    String name = record.get("name").toString().replace("\"", "");
+
+                    String id = record.get("orgid").toString();
+                    Double importance = Double.valueOf(record.get("importance").toString());
+                  /*  Expert expert = new Expert();
+                    expert.setName(name);
+                    expert.setOrgnizationname(orgname);
+                    expert.setImportance(followers);
+                    expert.setOrgnizationid(id);*/
+                    reitem.put("name", name);
+                    reitem.put("importance", importance);
+                    if (importance != before) {
+                        count++;
+                    }
+                    before = importance;
+                    item_list.add(reitem);
+
+                    //list.add(expert);
                 }
-                before = importance;
-                item_list.add(reitem);
-
-                //list.add(expert);
+                re.put("status", "success");
+                re.put("expert_list", item_list);
+            } else {
+                re.put("status", "failed");
             }
-            re.put("status","success");
-            re.put("expert_list", item_list);
             String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
             return tmp;
-        }else{
-            re.put("status","fail");
+        }catch (Exception e){
             String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
             return tmp;
         }
@@ -80,46 +84,49 @@ public class PersonImportance {
 
     public String PageRankMostImportant(String orgname,int cnt){
         JSONObject re = new JSONObject();
-        List item_list = new ArrayList();
-        List<Expert> list = new ArrayList<>();
-        String query0 =  String.format("MATCH(n:EXPERT) where n.orgnizationname='%s' RETURN n",orgname);
-        StatementResult statementResult = neo4jUtil.excuteCypherSql(query0);
-        if(statementResult.hasNext()) {
-            String query = String.format("CALL algo.pageRank.stream('EXPERT', 'rel', " +
-                    "{iterations:20, dampingFactor:0.85})\n" +
-                    "YIELD nodeId, score\n" + "WHERE algo.asNode(nodeId).orgnizationname='%s'" +
-                    "RETURN algo.asNode(nodeId).name AS name,algo.asNode(nodeId).orgnizationname as orgname,score\n" +
-                    "ORDER BY score DESC", orgname);
-            StatementResult result = neo4jUtil.excuteCypherSql(query);
-            int count = 0;
-            double before = Double.MIN_VALUE;
-            while (result.hasNext() && count < cnt) {
-                JSONObject reitem = new JSONObject();
-                Record record = result.next();
+        try {
+            List item_list = new ArrayList();
+            List<Expert> list = new ArrayList<>();
+            String query0 = String.format("MATCH(n:EXPERT) where n.orgnizationname='%s' RETURN n", orgname);
+            StatementResult statementResult = neo4jUtil.excuteCypherSql(query0);
+            if (statementResult.hasNext()) {
+                String query = String.format("CALL algo.pageRank.stream('EXPERT', 'rel', " +
+                        "{iterations:20, dampingFactor:0.85})\n" +
+                        "YIELD nodeId, score\n" + "WHERE algo.asNode(nodeId).orgnizationname='%s'" +
+                        "RETURN algo.asNode(nodeId).name AS name,algo.asNode(nodeId).orgnizationname as orgname,score\n" +
+                        "ORDER BY score DESC", orgname);
+                StatementResult result = neo4jUtil.excuteCypherSql(query);
+                int count = 0;
+                double before = Double.MIN_VALUE;
+                while (result.hasNext() && count < cnt) {
+                    JSONObject reitem = new JSONObject();
+                    Record record = result.next();
 
-                String name = record.get("name").toString().replace("\"", "");
+                    String name = record.get("name").toString().replace("\"", "");
 
-                double importance = Double.valueOf(record.get("score").toString());
-                DecimalFormat df = new DecimalFormat("#.00");
-                importance = Double.valueOf(df.format(importance));
-                /*Expert expert = new Expert();
-                expert.setName(name);
-                expert.setImportance(importance);
-                list.add(expert);*/
-                reitem.put("name", name);
-                reitem.put("importance", importance);
-                if (importance != before) {
-                    count++;
+                    double importance = Double.valueOf(record.get("score").toString());
+                    DecimalFormat df = new DecimalFormat("#.00");
+                    importance = Double.valueOf(df.format(importance));
+                    /*Expert expert = new Expert();
+                    expert.setName(name);
+                    expert.setImportance(importance);
+                    list.add(expert);*/
+                    reitem.put("name", name);
+                    reitem.put("importance", importance);
+                    if (importance != before) {
+                        count++;
+                    }
+                    before = importance;
+                    item_list.add(reitem);
                 }
-                before = importance;
-                item_list.add(reitem);
+                re.put("status", "success");
+                re.put("expert_list", item_list);
+            } else {
+                re.put("status", "failed");
             }
-            re.put("status","success");
-            re.put("expert_list", item_list);
             String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
             return tmp;
-        }else{
-            re.put("status","fail");
+        }catch (Exception e){
             String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
             return tmp;
         }

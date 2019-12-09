@@ -26,7 +26,7 @@ public class PersonCommunity {
         StatementResult result = neo4jUtil.excuteCypherSql(query);
         if(result.hasNext()) {
             int m = Integer.valueOf(result.next().get("community").toString());
-            String query1 = String.format("MATCH (N:EXPERT) WHERE N.community=%d RETURN N.orgnizationname as orgname,N.name as name,N.community as community", m, name);
+            String query1 = String.format("MATCH (N:EXPERT) WHERE N.community=%d RETURN N.orgnizationname as orgname,N.name as name", m);
             StatementResult result1 = neo4jUtil.excuteCypherSql(query1);
             while (result1.hasNext()) {
                 JSONObject item = new JSONObject();
@@ -41,31 +41,27 @@ public class PersonCommunity {
                 expert.setCommunity(community);*/
                 item.put("name", othername);
                 item.put("orgnizationname", otherorgname);
-                item.put("community", community);
                 item_list.add(item);
                 //list.add(expert);
             }
             re.put("status","success");
             re.put("expert_list", item_list);
-            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
-            return tmp;
         }else{
-            re.put("status","fail");
-            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
-            return tmp;
+            re.put("status","failed");
         }
+        String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+        return tmp;
     }
 
     public String lpa(String orgname,String name){
         //List<Expert> list = new ArrayList<>();
         List item_list = new ArrayList<>();
         JSONObject re = new JSONObject();
-
         String query = String.format("MATCH (N:EXPERT) WHERE N.orgnizationname='%s' AND N.name='%s' Return N.partition as partition" ,orgname,name);
         StatementResult result = neo4jUtil.excuteCypherSql(query);
         if(result.hasNext()) {
             int m = Integer.valueOf(result.next().get("partition").toString());
-            String query1 = String.format("MATCH (N:EXPERT) WHERE N.partition=%d  RETURN N.orgnizationname as orgname,N.name as name", m, name);
+            String query1 = String.format("MATCH (N:EXPERT) WHERE N.partition=%d  RETURN N.orgnizationname as orgname,N.name as name", m);
             StatementResult result1 = neo4jUtil.excuteCypherSql(query1);
             while (result1.hasNext()) {
                 JSONObject item = new JSONObject();
@@ -82,12 +78,11 @@ public class PersonCommunity {
             }
             re.put("status","success");
             re.put("expert_list", item_list);
-            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
-            return tmp;
+
         }else{
-            re.put("status","fail");
-            String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
-            return tmp;
+            re.put("status","failed");
         }
+        String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
+        return tmp;
     }
 }

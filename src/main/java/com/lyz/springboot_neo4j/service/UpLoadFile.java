@@ -41,7 +41,6 @@ public class UpLoadFile {
 
     public String delete_node(String[] expert_arr) {
         boolean flag = true;
-        String false_line = "删除失败，不存在节点";
         for (String expert : expert_arr) {
             String cypher0 = String.format("match(n:EXPERT{id:'%s'}) return n", expert);
             StatementResult result0 = neo4jUtil.excuteCypherSql(cypher0);
@@ -50,12 +49,11 @@ public class UpLoadFile {
             if(!result0.hasNext()){
                 flag = false;
             }
-            false_line  = false_line + expert + " ";
         }
-        if(!flag){
-            return false_line;
+        if(flag){
+            return "success";
         }else{
-            return "删除成功！";
+            return "failed";
         }
     }
 
@@ -64,17 +62,16 @@ public class UpLoadFile {
         String cypher0 = String.format("MATCH (a:EXPERT{id:'%s'})-[r:rel]-(b:EXPERT{id:'%s'}) RETURN r",startnodeid,endnodeid);
         StatementResult result = neo4jUtil.excuteCypherSql(cypher0);
         if(!result.hasNext()){
-            return "删除边失败！";
+            return "failed";
         }
         String cypher = String.format("MATCH (a:EXPERT{id:'%s'})-[r:rel]-(b:EXPERT{id:'%s'}) DELETE r",startnodeid,endnodeid);
-        System.out.println(cypher);
         try(Session session = driver.session()){
             try(Transaction tx = session.beginTransaction()){
                 tx.run(cypher);
                 tx.success();
             }
         }
-        return "删除成功！";
+        return "success";
     }
 }
 

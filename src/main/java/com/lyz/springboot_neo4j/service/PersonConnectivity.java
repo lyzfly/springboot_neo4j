@@ -49,7 +49,7 @@ public class PersonConnectivity {
                 expert.setOrgnizationname(orgname);
                 list.add(expert);*/
             }
-            re.put("msg","success");
+            re.put("msg","成功");
             re.put("expert_list", item_list);
         }
         else if(!result1.hasNext()&&!result2.hasNext()){

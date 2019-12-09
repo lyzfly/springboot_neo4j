@@ -34,8 +34,8 @@ public class PickUploadController {
         JSONObject re = new JSONObject();
         String filename = file.getOriginalFilename();
         String projectpath = System.getProperty("user.dir");
-        String path = "/var/lib/neo4j/import/"+filename;
-        //String path = "/bigdata/neo4j/neo4j-community-3.5.7/import/"+filename;
+        //String path = "/var/lib/neo4j/import/"+filename;
+        String path = "/bigdata/neo4j/neo4j-community-3.5.7/import/"+filename;
         File dest_rel = new File(path);
         try {
             file.transferTo(dest_rel);
@@ -43,16 +43,17 @@ public class PickUploadController {
             filepath = filepath.replace("\\", "/");
             upLoadFile.loadcsvToNeo4j_node(filepath);
 
-            String query0 = "CALL algo.louvain('EXPERT','rel',{write:true,writeproperty:'community'})" +
+           /* String query0 = "CALL algo.louvain('EXPERT','rel',{write:true,writeproperty:'community'})" +
                     "YIELD nodes,communityCount,iterations,loadMillis,computeMillis,writeMillis";
             neo4jUtil.excuteCypherSql(query0);
 
             String query1 = "Call algo.labelPropagation('EXPERT','rel',{iterations:3,writeProperty:'partition',write:true,direction:'both'})";
-            neo4jUtil.excuteCypherSql(query1);
-
-            return "添加成功！";
+            neo4jUtil.excuteCypherSql(query1);*/
+            re.put("status","success");
+            return re.toJSONString();
         } catch (IOException e) {
-            return "添加失败！";
+            re.put("status","failed");
+            return re.toJSONString();
         }
     }
 
@@ -60,19 +61,17 @@ public class PickUploadController {
     @RequestMapping(value = "/upload_relfile",method = RequestMethod.POST)
 
     public String uploadFile1(@RequestParam( value = "relfile") MultipartFile file){
+        JSONObject re = new JSONObject();
         String filename = file.getOriginalFilename();
         //String projectpath = System.getProperty("user.dir");
-
-        String projectpath = "/var/lib/neo4j/import/";
-        //String projectpath = "/bigdata/neo4j/neo4j-community-3.5.7/import/";
+        //String projectpath = "/var/lib/neo4j/import/";
+        String projectpath = "/bigdata/neo4j/neo4j-community-3.5.7/import/";
         String path = projectpath+filename;
         File dest_rel = new File(path);
-        System.out.println(dest_rel.getPath());
         try {
             file.transferTo(dest_rel);
             String filepath = "file:///"+path;
             filepath = filepath.replace("\\", "/");
-            System.out.println(filepath);
             upLoadFile.loadcsvToNeo4j_rel(filepath);
             String query0 = "CALL algo.louvain('EXPERT','rel',{write:true,writeproperty:'community'})" +
                     "YIELD nodes,communityCount,iterations,loadMillis,computeMillis,writeMillis";
@@ -80,40 +79,45 @@ public class PickUploadController {
 
             String query1 = "Call algo.labelPropagation('EXPERT','rel',{iterations:3,writeProperty:'partition',write:true,direction:'both'})";
             neo4jUtil.excuteCypherSql(query1);
-            return "添加成功！";
+            re.put("status","success");
+            return re.toJSONString();
         } catch (IOException e) {
-            e.printStackTrace();
-            return "添加失败！";
+            re.put("status","failed");
+            return re.toJSONString();
         }
     }
 
     @ResponseBody
     @RequestMapping(value = "/delete_node",method = RequestMethod.POST)
     public String delete_node(HttpServletRequest request){
+        JSONObject re = new JSONObject();
         String expert_arrstring = request.getParameter("node");
         String[]  arr = expert_arrstring.split(",");
+        String line = upLoadFile.delete_node(arr);
+        System.out.println("line"+line);
         String query0 = "CALL algo.louvain('EXPERT','rel',{write:true,writeproperty:'community'})" +
                 "YIELD nodes,communityCount,iterations,loadMillis,computeMillis,writeMillis";
         neo4jUtil.excuteCypherSql(query0);
-
         String query1 = "Call algo.labelPropagation('EXPERT','rel',{iterations:3,writeProperty:'partition',write:true,direction:'both'})";
         neo4jUtil.excuteCypherSql(query1);
-        return upLoadFile.delete_node(arr);
+        re.put("status",line);
+        return re.toJSONString();
     }
 
     @ResponseBody
     @RequestMapping(value = "/delete_edge",method = RequestMethod.POST)
     public String delete_edge(HttpServletRequest request){
+        JSONObject re = new JSONObject();
         String edge = request.getParameter("edge");
         String startnodeid = edge.split("-")[0];
         String endnodeid = edge.split("-")[1];
+        String line = upLoadFile.delete_edge(startnodeid,endnodeid);
         String query0 = "CALL algo.louvain('EXPERT','rel',{write:true,writeproperty:'community'})" +
                 "YIELD nodes,communityCount,iterations,loadMillis,computeMillis,writeMillis";
         neo4jUtil.excuteCypherSql(query0);
-
         String query1 = "Call algo.labelPropagation('EXPERT','rel',{iterations:3,writeProperty:'partition',write:true,direction:'both'})";
         neo4jUtil.excuteCypherSql(query1);
-        return upLoadFile.delete_edge(startnodeid,endnodeid);
+        re.put("status",line);
+        return re.toJSONString();
     }
-
 }

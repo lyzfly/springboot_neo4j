@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="icon" href="">
-    <meta charset="UTF-8">
-    <title>复杂网络分析系统</title>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript">
+<script type="text/javascript">
         function doupload() {
             var formdata = new FormData($("#upload")[0]);
             $.ajax({
@@ -18,8 +13,14 @@
                 contentType:false,
                 processData:false,
                 success:function (data){
-
-                    alert(data);
+                    var jsonObj = JSON.parse( data );
+                    var status = jsonObj.status;
+                    if(status=="success"){
+                        alert("上传成功");
+                    }
+                    if(status=="failed"){
+                        alert("上传失败");
+                    }
                 },
                 error:function () {
                     alert("错误");
@@ -39,7 +40,14 @@
                 contentType:false,
                 processData:false,
                 success:function (data){
-                    alert(data);
+                    var jsonObj = JSON.parse(data);
+                    var status = jsonObj.status;
+                    if(status=="success"){
+                        alert("上传成功");
+                    }
+                    if(status=="failed"){
+                        alert("上传失败");
+                    }
                 },
                 error:function () {
                     alert("错误!");
@@ -57,7 +65,13 @@
                 },
                 async:false,
                 success:function (data) {
-                    alert(data)
+                    var jsonObj = JSON.parse(data);
+                    var status = jsonObj.status;
+                    if(status=="success"){
+                        alert("删除成功");
+                    }else{
+                        alert("删除失败,不存在该节点");
+                    }
                 }
             });
         }
@@ -72,12 +86,23 @@
                 },
                 async:false,
                 success:function (data) {
-                    alert(data)
+                    var jsonObj = JSON.parse(data);
+                    var status = jsonObj.status;
+                    if(status=="success"){
+                        alert("删除成功");
+                    }else{
+                        alert("删除失败，不存在该条边");
+                    }
                 }
             });
         }
 
     </script>
+<head>
+    <link rel="icon" href="">
+    <meta charset="UTF-8">
+    <title>复杂网络分析系统</title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <style>
         .header {
             background: deepskyblue;

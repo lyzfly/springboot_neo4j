@@ -48,7 +48,7 @@ public class PersonSimilarity {
                 String similarnode_name = record.get("to").toString().replace("\"", "");
                 String similarnode_org = record.get("orgname").toString().replace("\"", "");
                 DecimalFormat df = new DecimalFormat("#.##");
-                String similarity = df.format(Double.valueOf(record.get("similarity").toString()));
+                Double similarity = Double.valueOf(df.format(Double.valueOf(record.get("similarity").toString())));
                 reitem.put("similarnodename", similarnode_name);
                 reitem.put("similarnodeorg", similarnode_org);
                 reitem.put("similarity", similarity);
@@ -61,7 +61,7 @@ public class PersonSimilarity {
             re.put("status", "success");
             re.put("expert_list", item_list);
         }else{
-            re.put("status","fail");
+            re.put("status","failed");
         }
         String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
         return tmp;
@@ -129,7 +129,7 @@ public class PersonSimilarity {
                     DecimalFormat df = new DecimalFormat("#.00");
                     String similarnode_name = item.getKey().getName().replace("\"","");
                     String similarnode_org = item.getKey().getOrgnizationname().replace("\"","");
-                    String similarity = df.format(item.getValue());
+                    Double similarity = Double.valueOf(df.format(item.getValue()));
                     reitem.put("similarnodename",similarnode_name);
                     reitem.put("similarnodeorg",similarnode_org);
                     reitem.put("similarity",similarity);
@@ -147,7 +147,7 @@ public class PersonSimilarity {
             re.put("expert_list",item_list);
             re.put("status","success");
         }else{
-            re.put("status","fail");
+            re.put("status","failed");
         }
         String tmp = StringEscapeUtils.unescapeEcmaScript(re.toJSONString());
         return tmp;

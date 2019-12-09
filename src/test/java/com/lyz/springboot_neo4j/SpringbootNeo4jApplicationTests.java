@@ -29,8 +29,6 @@ public class SpringbootNeo4jApplicationTests {
     }
 
 
-
-
     @Autowired
     private PersonConnectivity personConnectivity;
     @Test
